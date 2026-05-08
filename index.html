@@ -14,797 +14,1081 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{width:100%;height:100%;overflow:hidden;font-family:'Tajawal',sans-serif;direction:rtl;background:#0f0f1a}
-/* ─── SCREENS ─── */
-.scr{position:fixed;inset:0;display:none;flex-direction:column;overflow:hidden}
-.scr.on{display:flex}
-/* ─── SPLASH ─── */
-#s-splash{background:linear-gradient(135deg,#FC5C7D,#6A3DE8,#00C9FF);align-items:center;justify-content:center;text-align:center}
+
+/* ═══ SCREENS ═══ */
+.pg{position:fixed;inset:0;display:none;overflow:hidden}
+.pg.show{display:block}
+
+/* ═══ SPLASH ═══ */
+#pg-splash{background:linear-gradient(135deg,#FC5C7D,#6A3DE8,#00C9FF)}
+.splash-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
 .sp-logo{font-size:clamp(48px,13vw,76px);font-weight:900;color:#fff;text-shadow:0 4px 28px #0003;margin-bottom:10px;letter-spacing:-2px}
-.sp-q{font-size:clamp(14px,3.5vw,19px);color:rgba(255,255,255,.9);margin-bottom:6px;padding:0 20px}
+.sp-quote{font-size:clamp(14px,3.5vw,19px);color:rgba(255,255,255,.9);margin-bottom:6px;padding:0 20px}
 .sp-sub{font-size:clamp(11px,2.5vw,14px);color:rgba(255,255,255,.55);margin-bottom:44px}
-.sp-btn{background:#fff;color:#FC5C7D;border:none;padding:15px 60px;border-radius:50px;font-family:'Tajawal',sans-serif;font-size:clamp(15px,4vw,19px);font-weight:700;cursor:pointer;box-shadow:0 8px 32px #0003;transition:.15s}
-.sp-btn:active{transform:scale(.97)}
-.blob{position:absolute;border-radius:50%;background:rgba(255,255,255,.07);pointer-events:none}
-/* ─── AUTH ─── */
-#s-auth{background:linear-gradient(160deg,#1a1a2e,#16213e);align-items:center;justify-content:center;padding:24px}
-.auth-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:28px 24px;width:min(360px,100%);backdrop-filter:blur(10px)}
-.auth-logo{text-align:center;font-size:32px;font-weight:900;color:#fff;margin-bottom:4px}
-.auth-sub{text-align:center;font-size:12px;color:rgba(255,255,255,.4);margin-bottom:24px}
-.auth-tabs{display:flex;background:rgba(255,255,255,.06);border-radius:12px;padding:3px;margin-bottom:20px}
-.auth-tab{flex:1;padding:9px;border-radius:10px;border:none;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;background:transparent;color:rgba(255,255,255,.45);transition:.2s}
-.auth-tab.on{background:#fff;color:#1a1a2e;box-shadow:0 3px 12px #0002}
-.auth-field{margin-bottom:14px}
-.auth-label{font-size:12px;color:rgba(255,255,255,.55);margin-bottom:5px}
-.auth-inp{width:100%;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.12);border-radius:12px;padding:11px 14px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;transition:.2s}
-.auth-inp:focus{border-color:#FC5C7D;background:rgba(255,255,255,.12)}
-.auth-inp::placeholder{color:rgba(255,255,255,.3)}
-.auth-btn{width:100%;border:none;border-radius:14px;padding:13px;font-family:'Tajawal',sans-serif;font-size:16px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#FC5C7D,#6A3DE8);color:#fff;box-shadow:0 6px 24px rgba(252,92,125,.35);margin-top:4px;transition:.15s}
-.auth-btn:active{transform:scale(.98)}
-.auth-err{font-size:12px;color:#FF6B6B;text-align:center;margin-top:10px;min-height:18px}
-.auth-guest{text-align:center;font-size:12px;color:rgba(255,255,255,.35);margin-top:14px;cursor:pointer;text-decoration:underline}
-/* ─── HOME ─── */
-#s-home{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);align-items:center;justify-content:center;overflow-y:auto;padding:24px 16px}
-.hm-header{display:flex;align-items:center;justify-content:space-between;width:min(340px,100%);margin-bottom:20px}
-.hm-user{font-size:13px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:6px}
-.hm-user b{color:rgba(255,255,255,.85)}
-.hm-logout{background:rgba(255,255,255,.08);border:none;border-radius:8px;padding:5px 10px;font-family:'Tajawal',sans-serif;font-size:11px;color:rgba(255,255,255,.5);cursor:pointer}
-.hm-quote{background:rgba(255,255,255,.07);border-radius:20px;padding:20px 28px;margin-bottom:22px;text-align:center;border:1px solid rgba(255,255,255,.1);width:min(340px,100%)}
-.hm-q-ico{font-size:26px;margin-bottom:6px}
-.hm-q-txt{font-size:clamp(14px,3.5vw,17px);color:#fff;font-weight:700;margin-bottom:3px}
-.hm-q-sub{font-size:11px;color:rgba(255,255,255,.35)}
-.hm-btns{display:flex;flex-direction:column;gap:10px;width:min(300px,100%)}
-.hm-btn{border:none;padding:14px 20px;border-radius:16px;font-family:'Tajawal',sans-serif;font-size:clamp(14px,3.5vw,16px);font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:.15s}
-.hm-btn:active{transform:scale(.98)}
-.hm-add{background:linear-gradient(135deg,#FC5C7D,#F093FB);color:#fff;box-shadow:0 6px 20px rgba(252,92,125,.35)}
-.hm-open{background:linear-gradient(135deg,#667EEA,#764BA2);color:#fff;box-shadow:0 6px 20px rgba(102,126,234,.35)}
-.hm-list{margin-top:16px;background:rgba(255,255,255,.05);border-radius:16px;padding:14px 18px;width:min(300px,100%);max-height:200px;overflow-y:auto;border:1px solid rgba(255,255,255,.08)}
-.hm-list-hd{font-size:11px;color:rgba(255,255,255,.3);margin-bottom:8px}
-.hm-row{display:flex;align-items:center;gap:8px;padding:8px 0;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.78);font-size:13px}
-.hm-dot{width:9px;height:9px;border-radius:3px;flex-shrink:0}
-/* ─── CANVAS ─── */
-#s-canvas{position:fixed;inset:0;overflow:hidden;touch-action:none}
-#cv-bg{position:absolute;inset:0;z-index:0}
+.sp-start-btn{background:#fff;color:#FC5C7D;border:none;padding:16px 64px;border-radius:50px;font-family:'Tajawal',sans-serif;font-size:clamp(15px,4vw,20px);font-weight:700;cursor:pointer;box-shadow:0 8px 32px #0003}
+.sp-blob{position:absolute;border-radius:50%;background:rgba(255,255,255,.07);pointer-events:none}
+
+/* ═══ AUTH ═══ */
+#pg-auth{background:linear-gradient(160deg,#1a1a2e,#16213e)}
+.auth-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.auth-box{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:24px;padding:28px 22px;width:min(360px,100%)}
+.auth-logo{text-align:center;font-size:30px;font-weight:900;color:#fff;margin-bottom:4px}
+.auth-tagline{text-align:center;font-size:12px;color:rgba(255,255,255,.4);margin-bottom:22px}
+.auth-tabs{display:flex;background:rgba(255,255,255,.07);border-radius:12px;padding:3px;margin-bottom:20px;gap:3px}
+.auth-tab{flex:1;padding:9px;border-radius:10px;border:none;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;background:transparent;color:rgba(255,255,255,.4);transition:.2s}
+.auth-tab.active{background:#fff;color:#1a1a2e;box-shadow:0 3px 12px #0002}
+.fld{margin-bottom:14px}
+.fld-lbl{font-size:12px;color:rgba(255,255,255,.5);margin-bottom:5px}
+.fld-inp{width:100%;background:rgba(255,255,255,.09);border:1.5px solid rgba(255,255,255,.12);border-radius:12px;padding:12px 14px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;transition:.2s}
+.fld-inp:focus{border-color:#FC5C7D;background:rgba(255,255,255,.13)}
+.fld-inp::placeholder{color:rgba(255,255,255,.28)}
+.auth-submit{width:100%;border:none;border-radius:14px;padding:13px;font-family:'Tajawal',sans-serif;font-size:16px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#FC5C7D,#6A3DE8);color:#fff;box-shadow:0 6px 24px rgba(252,92,125,.35);margin-top:4px}
+.auth-err{font-size:12px;color:#FF8E8E;text-align:center;margin-top:10px;min-height:16px}
+.auth-guest-btn{text-align:center;font-size:12px;color:rgba(255,255,255,.35);margin-top:14px;cursor:pointer;text-decoration:underline;background:none;border:none;font-family:'Tajawal',sans-serif;width:100%}
+
+/* ═══ HOME ═══ */
+#pg-home{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)}
+.home-wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 16px;overflow-y:auto;padding-top:max(24px,env(safe-area-inset-top))}
+.home-topbar{display:flex;align-items:center;justify-content:space-between;width:min(320px,100%);margin-bottom:20px}
+.home-user-txt{font-size:13px;color:rgba(255,255,255,.5)}
+.home-user-name{color:rgba(255,255,255,.9);font-weight:700}
+.home-logout-btn{background:rgba(255,255,255,.09);border:none;border-radius:9px;padding:6px 12px;font-family:'Tajawal',sans-serif;font-size:11px;color:rgba(255,255,255,.5);cursor:pointer}
+.home-quote-box{background:rgba(255,255,255,.07);border-radius:20px;padding:20px 24px;margin-bottom:20px;text-align:center;border:1px solid rgba(255,255,255,.1);width:min(320px,100%)}
+.home-q-ico{font-size:26px;margin-bottom:6px}
+.home-q-txt{font-size:clamp(14px,3.5vw,17px);color:#fff;font-weight:700;margin-bottom:3px}
+.home-q-sub{font-size:11px;color:rgba(255,255,255,.3)}
+.home-action-btns{display:flex;flex-direction:column;gap:10px;width:min(320px,100%)}
+.home-btn{border:none;padding:15px 20px;border-radius:16px;font-family:'Tajawal',sans-serif;font-size:clamp(14px,3.5vw,16px);font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}
+.home-btn-add{background:linear-gradient(135deg,#FC5C7D,#F093FB);color:#fff;box-shadow:0 6px 20px rgba(252,92,125,.3)}
+.home-btn-open{background:linear-gradient(135deg,#667EEA,#764BA2);color:#fff;box-shadow:0 6px 20px rgba(102,126,234,.3)}
+.home-projects{margin-top:16px;background:rgba(255,255,255,.05);border-radius:16px;padding:14px 18px;width:min(320px,100%);max-height:200px;overflow-y:auto;border:1px solid rgba(255,255,255,.08)}
+.home-proj-title{font-size:11px;color:rgba(255,255,255,.3);margin-bottom:8px}
+.home-proj-row{display:flex;align-items:center;gap:8px;padding:8px 0;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.75);font-size:13px}
+.home-proj-dot{width:9px;height:9px;border-radius:3px;flex-shrink:0}
+
+/* ═══ CANVAS ═══ */
+#pg-canvas{overflow:hidden;touch-action:none}
+#cv-bg{position:absolute;inset:0;z-index:0;transition:background .3s}
 #cv-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
-/* ─── TOOLBAR ─── */
-#toolbar{position:absolute;top:12px;right:12px;z-index:200;display:flex;gap:8px;flex-wrap:wrap}
-.tbtn{border:none;padding:9px 15px;border-radius:13px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:900;cursor:pointer;color:#fff;box-shadow:0 4px 16px #0002;white-space:nowrap;transition:.15s}
-.tbtn:active{transform:scale(.96)}
-.tbtn-main{background:linear-gradient(135deg,#FC5C7D,#6A3DE8)}
-.tbtn-style{background:linear-gradient(135deg,#4FACFE,#00F2FE)}
-/* ─── DROPDOWN ─── */
-.dd{position:absolute;top:46px;right:0;background:#fff;border-radius:18px;box-shadow:0 12px 50px #00000025;padding:10px;min-width:220px;z-index:600;display:none;max-height:72vh;overflow-y:auto}
-.dd.on{display:block}
-.dd-ttl{font-size:11px;color:#aaa;padding:2px 8px 8px;border-bottom:1px solid #f5f5f5;margin-bottom:4px}
-.dd-btn{display:flex;align-items:center;gap:9px;padding:10px 10px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:500;color:#333;border:none;background:transparent;font-family:'Tajawal',sans-serif;width:100%;text-align:right}
-.dd-btn:hover,.dd-btn:active{background:#f5f5f5}
+#cv-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;z-index:2}
+.cv-empty-ico{font-size:50px;opacity:.2;margin-bottom:10px}
+.cv-empty-txt{font-size:15px;font-weight:600;color:#bbb;text-align:center;line-height:1.6}
+
+/* ═══ TOOLBAR ═══ */
+#toolbar{position:absolute;top:12px;right:12px;z-index:300;display:flex;gap:8px}
+.tb-btn{border:none;padding:9px 15px;border-radius:13px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:900;cursor:pointer;color:#fff;box-shadow:0 4px 16px #0002;white-space:nowrap}
+.tb-btn-main{background:linear-gradient(135deg,#FC5C7D,#6A3DE8)}
+.tb-btn-style{background:linear-gradient(135deg,#4FACFE,#00F2FE)}
+
+/* ═══ DROPDOWN ═══ */
+.dropdown{position:absolute;top:46px;right:0;background:#fff;border-radius:18px;box-shadow:0 12px 50px #00000025;padding:10px;min-width:218px;z-index:400;display:none;max-height:72vh;overflow-y:auto}
+.dropdown.open{display:block}
+.dd-header{font-size:11px;color:#aaa;padding:2px 8px 8px;border-bottom:1px solid #f5f5f5;margin-bottom:4px}
+.dd-item{display:flex;align-items:center;gap:9px;padding:10px 10px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:500;color:#333;border:none;background:transparent;font-family:'Tajawal',sans-serif;width:100%;text-align:right}
+.dd-item:hover{background:#f5f5f5}
 .dd-sep{margin:5px 0;border-top:1px solid #f5f5f5}
-.dd-sub{font-size:11px;color:#aaa;padding:4px 10px 5px}
-.dd-proj{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:10px;cursor:pointer;font-size:13px;color:#333}
-.dd-proj:hover{background:#f5f5f5}
-.dd-pdel{background:none;border:none;cursor:pointer;font-size:13px;color:#ccc;padding:0;margin-right:auto}
-.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:2px 0}
-.sg-opt{border:2.5px solid #e8e8e8;border-radius:11px;padding:9px 5px;cursor:pointer;text-align:center;font-size:11px;font-weight:700;transition:.15s}
-.sg-opt.sel{border-color:#6A3DE8;transform:scale(1.05)}
-/* ─── CARDS ─── */
-.card{position:absolute;min-width:152px;max-width:192px;border-radius:20px;padding:12px 14px;cursor:grab;box-shadow:0 8px 28px #00000018;z-index:10;touch-action:none;user-select:none;transition:box-shadow .2s}
-.card.drag{cursor:grabbing;box-shadow:0 22px 60px #00000030;z-index:60;transform:rotate(1.5deg) scale(1.04)}
-.c-row{display:flex;align-items:center;gap:6px;margin-bottom:8px}
-.c-emoji{font-size:20px;flex-shrink:0}
-.c-inp{background:transparent;border:none;outline:none;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;flex:1;min-width:0;text-shadow:0 1px 4px #0002}
-.c-tags{display:flex;flex-wrap:wrap;gap:4px}
-.ctag{background:rgba(255,255,255,.22);border:none;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:700;color:#fff;cursor:pointer;font-family:'Tajawal',sans-serif;transition:.1s}
-.ctag:active{background:rgba(255,255,255,.4)}
-.ctag-del{background:rgba(255,70,70,.32)}
-.c-mini{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
-.c-mbadge{background:rgba(255,255,255,.28);border-radius:20px;padding:2px 8px;font-size:10px;color:#fff;font-weight:700}
-/* ─── NODES ─── */
-.node{position:absolute;width:118px;border-radius:15px;padding:10px 11px;cursor:grab;box-shadow:0 5px 20px #00000013;z-index:15;touch-action:none;user-select:none;transition:box-shadow .2s}
-.node.drag{cursor:grabbing;z-index:55;box-shadow:0 16px 48px #00000020}
-.node.act{z-index:20}
-.n-lbl{font-size:13px;font-weight:700}
-.n-cnt{font-size:10px;color:#888;margin-top:2px}
-.n-dt{font-size:9px;margin-top:2px}
-/* ─── TASK PANEL ─── */
-#task-panel{position:absolute;width:min(250px,94vw);background:#fff;border-radius:20px;box-shadow:0 18px 60px #00000022;padding:14px;z-index:400;display:none;max-height:82vh;overflow-y:auto}
-#task-panel.on{display:block}
-.tp-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.tp-lbl{font-size:13px;font-weight:900}
-.tp-cn{font-size:11px;color:#aaa;margin-top:1px}
-.tp-x{background:#f0f0f0;border:none;border-radius:8px;width:27px;height:27px;cursor:pointer;font-size:15px;font-family:'Tajawal',sans-serif}
-.tp-sect{font-size:11px;color:#aaa;margin-bottom:5px}
-.tp-dt{width:100%;border:1.5px solid #e0e0e0;border-radius:10px;padding:7px 10px;font-family:'Tajawal',sans-serif;font-size:12px;outline:none;margin-bottom:6px}
-.tp-save{width:100%;border:none;border-radius:10px;padding:8px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:#fff}
-.tp-div{border-top:1px solid #f2f2f2;margin:10px 0}
-.t-list{max-height:150px;overflow-y:auto;margin-bottom:8px}
-.t-row{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid #f8f8f8}
-.t-chk{width:19px;height:19px;border-radius:6px;border-width:2px;border-style:solid;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff}
-.t-txt{flex:1;font-size:12px;color:#333}
-.t-done{color:#ccc;text-decoration:line-through}
-.t-del{background:none;border:none;cursor:pointer;font-size:12px;color:#ddd;padding:0}
-.t-add{display:flex;gap:6px}
-.t-inp{flex:1;border:1.5px solid #e0e0e0;border-radius:10px;padding:7px 10px;font-family:'Tajawal',sans-serif;font-size:13px;outline:none}
-.t-addbtn{border:none;border-radius:10px;padding:0 13px;cursor:pointer;font-size:20px;font-weight:900;color:#fff;font-family:'Tajawal',sans-serif}
-/* ─── EMPTY HINT ─── */
-#empty-hint{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;z-index:2}
-#empty-hint.on{display:flex}
-.eh-i{font-size:50px;opacity:.2;margin-bottom:10px}
-.eh-t{font-size:15px;font-weight:600;color:#bbb;text-align:center;line-height:1.6}
-/* ─── TOAST ─── */
-#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:10px 26px;border-radius:50px;font-size:13px;z-index:9999;white-space:nowrap;box-shadow:0 6px 24px #0003;opacity:0;transition:opacity .3s;pointer-events:none}
-#toast.on{opacity:1}
-/* ─── INSTALL BANNER ─── */
-#inst-banner{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#FC5C7D,#6A3DE8);color:#fff;padding:13px 18px;display:none;align-items:center;gap:10px;z-index:8000;box-shadow:0 -4px 20px #0002}
-#inst-banner.on{display:flex}
-.ib-txt{flex:1;font-size:13px;font-weight:700}
-.ib-txt small{display:block;font-size:11px;opacity:.75;font-weight:400}
-.ib-yes{background:#fff;color:#FC5C7D;border:none;border-radius:10px;padding:8px 16px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
-.ib-no{background:rgba(255,255,255,.18);color:#fff;border:none;border-radius:10px;padding:8px 14px;font-family:'Tajawal',sans-serif;font-size:12px;cursor:pointer}
-@media(max-width:400px){.card{min-width:138px;max-width:170px}.dd{min-width:195px}}
+.dd-sub-title{font-size:11px;color:#aaa;padding:4px 10px 5px}
+.dd-proj-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:10px;cursor:pointer;font-size:13px;color:#333}
+.dd-proj-item:hover{background:#f5f5f5}
+.dd-proj-del{background:none;border:none;cursor:pointer;font-size:13px;color:#ccc;padding:0;margin-right:auto}
+.style-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:2px 0}
+.style-opt{border:2.5px solid #e8e8e8;border-radius:11px;padding:9px 5px;cursor:pointer;text-align:center;font-size:11px;font-weight:700;transition:.15s}
+.style-opt.selected{border-color:#6A3DE8;transform:scale(1.05)}
+
+/* ═══ CARDS ═══ */
+.idea-card{position:absolute;min-width:150px;max-width:192px;border-radius:20px;padding:12px 13px;cursor:grab;box-shadow:0 8px 28px #00000018;z-index:10;touch-action:none;user-select:none}
+.idea-card.is-dragging{cursor:grabbing;box-shadow:0 22px 60px #0000002e;z-index:60;transform:rotate(1.5deg) scale(1.04)}
+.card-top{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.card-emoji{font-size:20px;flex-shrink:0}
+.card-title-inp{background:transparent;border:none;outline:none;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;flex:1;min-width:0;text-shadow:0 1px 4px #0002}
+.card-actions{display:flex;flex-wrap:wrap;gap:4px}
+.node-btn{background:rgba(255,255,255,.22);border:none;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:700;color:#fff;cursor:pointer;font-family:'Tajawal',sans-serif}
+.del-btn{background:rgba(255,70,70,.3);border:none;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:700;color:#fff;cursor:pointer;font-family:'Tajawal',sans-serif}
+.card-node-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.card-node-tag{background:rgba(255,255,255,.28);border-radius:20px;padding:2px 8px;font-size:10px;color:#fff;font-weight:700}
+
+/* ═══ NODE BUBBLES ═══ */
+.node-bubble{position:absolute;width:118px;border-radius:15px;padding:10px 11px;cursor:grab;box-shadow:0 5px 20px #00000013;z-index:15;touch-action:none;user-select:none}
+.node-bubble.is-dragging{cursor:grabbing;z-index:55;box-shadow:0 16px 48px #00000020}
+.node-bubble.is-active{z-index:20}
+.nb-label{font-size:13px;font-weight:700}
+.nb-count{font-size:10px;color:#888;margin-top:2px}
+.nb-dt{font-size:9px;margin-top:2px}
+
+/* ═══ TASK PANEL ═══ */
+#task-panel{position:absolute;width:min(250px,94vw);background:#fff;border-radius:20px;box-shadow:0 18px 60px #00000022;padding:14px;z-index:500;display:none;max-height:82vh;overflow-y:auto}
+#task-panel.open{display:block}
+.tp-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.tp-node-label{font-size:13px;font-weight:900}
+.tp-card-name{font-size:11px;color:#aaa;margin-top:1px}
+.tp-close{background:#f0f0f0;border:none;border-radius:8px;width:27px;height:27px;cursor:pointer;font-size:15px;font-family:'Tajawal',sans-serif;display:flex;align-items:center;justify-content:center}
+.tp-section-title{font-size:11px;color:#aaa;margin-bottom:5px}
+.tp-datetime{width:100%;border:1.5px solid #e0e0e0;border-radius:10px;padding:7px 10px;font-family:'Tajawal',sans-serif;font-size:12px;outline:none;margin-bottom:6px}
+.tp-save-dt{width:100%;border:none;border-radius:10px;padding:8px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:#fff}
+.tp-divider{border-top:1px solid #f2f2f2;margin:10px 0}
+.task-list-wrap{max-height:150px;overflow-y:auto;margin-bottom:8px}
+.task-item{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid #f8f8f8}
+.task-check{width:19px;height:19px;border-radius:6px;border-width:2px;border-style:solid;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff}
+.task-text{flex:1;font-size:12px;color:#333}
+.task-text.done{color:#ccc;text-decoration:line-through}
+.task-del-btn{background:none;border:none;cursor:pointer;font-size:12px;color:#ddd;padding:0}
+.task-add-row{display:flex;gap:6px}
+.task-add-inp{flex:1;border:1.5px solid #e0e0e0;border-radius:10px;padding:7px 10px;font-family:'Tajawal',sans-serif;font-size:13px;outline:none}
+.task-add-submit{border:none;border-radius:10px;padding:0 13px;cursor:pointer;font-size:20px;font-weight:900;color:#fff;font-family:'Tajawal',sans-serif;min-width:40px}
+
+/* ═══ TOAST ═══ */
+#toast-msg{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:10px 26px;border-radius:50px;font-size:13px;z-index:9999;white-space:nowrap;box-shadow:0 6px 24px #0003;opacity:0;transition:opacity .3s;pointer-events:none}
+#toast-msg.visible{opacity:1}
+
+/* ═══ INSTALL BANNER ═══ */
+#install-bar{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#FC5C7D,#6A3DE8);color:#fff;padding:13px 18px;display:none;align-items:center;gap:10px;z-index:8000}
+#install-bar.show{display:flex}
+.inst-txt{flex:1;font-size:13px;font-weight:700}
+.inst-txt small{display:block;font-size:11px;opacity:.75;font-weight:400}
+.inst-yes{background:#fff;color:#FC5C7D;border:none;border-radius:10px;padding:8px 16px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+.inst-no{background:rgba(255,255,255,.18);color:#fff;border:none;border-radius:10px;padding:8px 14px;font-family:'Tajawal',sans-serif;font-size:12px;cursor:pointer}
 </style>
 </head>
 <body>
 
-<!-- ══ SPLASH ══ -->
-<div id="s-splash" class="scr on">
-  <div class="blob" style="width:130px;height:130px;top:3%;left:-4%"></div>
-  <div class="blob" style="width:200px;height:200px;top:14%;left:63%"></div>
-  <div class="blob" style="width:100px;height:100px;top:65%;left:3%"></div>
-  <div class="blob" style="width:160px;height:160px;top:68%;left:68%"></div>
-  <div class="sp-logo">✨ فكرتى</div>
-  <div class="sp-q" id="sp-q">💡 كل فكرة عظيمة بدأت بخطوة صغيرة</div>
-  <div class="sp-sub">نظّم أفكارك · حقّق أهدافك · فكّك المهام</div>
-  <button class="sp-btn" id="btn-start">ابدأ التفكير ! 🚀</button>
-</div>
-
-<!-- ══ AUTH ══ -->
-<div id="s-auth" class="scr">
-  <div class="auth-box">
-    <div class="auth-logo">✨ فكرتى</div>
-    <div class="auth-sub">منظّم الأفكار الذكي</div>
-    <div class="auth-tabs">
-      <button class="auth-tab on" id="tab-login"  onclick="switchAuth('login')">تسجيل الدخول</button>
-      <button class="auth-tab"   id="tab-signup" onclick="switchAuth('signup')">إنشاء حساب</button>
-    </div>
-    <!-- LOGIN -->
-    <div id="form-login">
-      <div class="auth-field">
-        <div class="auth-label">البريد الإلكتروني</div>
-        <input class="auth-inp" id="li-email" type="email" placeholder="example@email.com" autocomplete="email">
-      </div>
-      <div class="auth-field">
-        <div class="auth-label">كلمة المرور</div>
-        <input class="auth-inp" id="li-pass"  type="password" placeholder="••••••••" autocomplete="current-password">
-      </div>
-      <button class="auth-btn" id="btn-login">تسجيل الدخول 🚀</button>
-    </div>
-    <!-- SIGNUP -->
-    <div id="form-signup" style="display:none">
-      <div class="auth-field">
-        <div class="auth-label">الاسم</div>
-        <input class="auth-inp" id="su-name" type="text" placeholder="اسمك الكريم">
-      </div>
-      <div class="auth-field">
-        <div class="auth-label">البريد الإلكتروني</div>
-        <input class="auth-inp" id="su-email" type="email" placeholder="example@email.com" autocomplete="email">
-      </div>
-      <div class="auth-field">
-        <div class="auth-label">كلمة المرور (6 أحرف على الأقل)</div>
-        <input class="auth-inp" id="su-pass"  type="password" placeholder="••••••••" autocomplete="new-password">
-      </div>
-      <div class="auth-field">
-        <div class="auth-label">تأكيد كلمة المرور</div>
-        <input class="auth-inp" id="su-pass2" type="password" placeholder="••••••••" autocomplete="new-password">
-      </div>
-      <button class="auth-btn" id="btn-signup">إنشاء الحساب ✨</button>
-    </div>
-    <div class="auth-err" id="auth-err"></div>
-    <div class="auth-guest" id="btn-guest">الدخول كزائر بدون حساب</div>
+<!-- ══════════ SPLASH ══════════ -->
+<div id="pg-splash" class="pg show">
+  <div class="sp-blob" style="width:130px;height:130px;top:3%;left:-4%"></div>
+  <div class="sp-blob" style="width:200px;height:200px;top:14%;left:63%"></div>
+  <div class="sp-blob" style="width:100px;height:100px;top:65%;left:3%"></div>
+  <div class="sp-blob" style="width:160px;height:160px;top:68%;left:68%"></div>
+  <div class="splash-inner">
+    <div class="sp-logo">✨ فكرتى</div>
+    <div class="sp-quote" id="sp-quote-txt">💡 كل فكرة عظيمة بدأت بخطوة صغيرة</div>
+    <div class="sp-sub">نظّم أفكارك · حقّق أهدافك · فكّك المهام</div>
+    <button class="sp-start-btn" id="SPLASH_BTN">ابدأ التفكير ! 🚀</button>
   </div>
 </div>
 
-<!-- ══ HOME ══ -->
-<div id="s-home" class="scr">
-  <div class="hm-header">
-    <div class="hm-user">مرحباً <b id="hm-username">...</b> 👋</div>
-    <button class="hm-logout" id="btn-logout">خروج</button>
-  </div>
-  <div class="hm-quote">
-    <div class="hm-q-ico">✨</div>
-    <div class="hm-q-txt" id="hm-q">💡 كل فكرة عظيمة بدأت بخطوة صغيرة</div>
-    <div class="hm-q-sub">فكرتى · منظّم الأفكار الذكي</div>
-  </div>
-  <div class="hm-btns">
-    <button class="hm-btn hm-add" id="btn-hm-add">➕ إضافة مشروع / فكرة جديدة</button>
-    <button class="hm-btn hm-open" id="btn-hm-open">🗺️ فتح لوحة الأفكار</button>
-  </div>
-  <div class="hm-list" id="hm-list" style="display:none">
-    <div class="hm-list-hd" id="hm-list-hd"></div>
-    <div id="hm-list-items"></div>
+<!-- ══════════ AUTH ══════════ -->
+<div id="pg-auth" class="pg">
+  <div class="auth-wrap">
+    <div class="auth-box">
+      <div class="auth-logo">✨ فكرتى</div>
+      <div class="auth-tagline">منظّم الأفكار الذكي</div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="TAB_LOGIN"  onclick="switchAuthTab('login')">تسجيل الدخول</button>
+        <button class="auth-tab"        id="TAB_SIGNUP" onclick="switchAuthTab('signup')">إنشاء حساب</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div id="FORM_LOGIN">
+        <div class="fld">
+          <div class="fld-lbl">📧 البريد الإلكتروني</div>
+          <input class="fld-inp" id="LI_EMAIL" type="email" placeholder="example@email.com">
+        </div>
+        <div class="fld">
+          <div class="fld-lbl">🔒 كلمة المرور</div>
+          <input class="fld-inp" id="LI_PASS" type="password" placeholder="••••••••">
+        </div>
+        <button class="auth-submit" id="BTN_LOGIN">تسجيل الدخول 🚀</button>
+      </div>
+
+      <!-- SIGNUP FORM -->
+      <div id="FORM_SIGNUP" style="display:none">
+        <div class="fld">
+          <div class="fld-lbl">👤 الاسم</div>
+          <input class="fld-inp" id="SU_NAME" type="text" placeholder="اسمك الكريم">
+        </div>
+        <div class="fld">
+          <div class="fld-lbl">📧 البريد الإلكتروني</div>
+          <input class="fld-inp" id="SU_EMAIL" type="email" placeholder="example@email.com">
+        </div>
+        <div class="fld">
+          <div class="fld-lbl">🔒 كلمة المرور (6 أحرف على الأقل)</div>
+          <input class="fld-inp" id="SU_PASS" type="password" placeholder="••••••••">
+        </div>
+        <div class="fld">
+          <div class="fld-lbl">🔒 تأكيد كلمة المرور</div>
+          <input class="fld-inp" id="SU_PASS2" type="password" placeholder="••••••••">
+        </div>
+        <button class="auth-submit" id="BTN_SIGNUP">إنشاء الحساب ✨</button>
+      </div>
+
+      <div class="auth-err" id="AUTH_ERR"></div>
+      <button class="auth-guest-btn" id="BTN_GUEST">الدخول كزائر بدون حساب</button>
+    </div>
   </div>
 </div>
 
-<!-- ══ CANVAS ══ -->
-<div id="s-canvas" class="scr">
+<!-- ══════════ HOME ══════════ -->
+<div id="pg-home" class="pg">
+  <div class="home-wrap">
+    <div class="home-topbar">
+      <div class="home-user-txt">مرحباً <span class="home-user-name" id="HOME_USERNAME">...</span> 👋</div>
+      <button class="home-logout-btn" id="BTN_HOME_LOGOUT">خروج 🚪</button>
+    </div>
+    <div class="home-quote-box">
+      <div class="home-q-ico">✨</div>
+      <div class="home-q-txt" id="HOME_QUOTE_TXT">💡 كل فكرة عظيمة بدأت بخطوة صغيرة</div>
+      <div class="home-q-sub">فكرتى · منظّم الأفكار الذكي</div>
+    </div>
+    <div class="home-action-btns">
+      <button class="home-btn home-btn-add"  id="BTN_HOME_ADD">➕ إضافة مشروع / فكرة جديدة</button>
+      <button class="home-btn home-btn-open" id="BTN_HOME_OPEN">🗺️ فتح لوحة الأفكار</button>
+    </div>
+    <div class="home-projects" id="HOME_PROJ_LIST" style="display:none">
+      <div class="home-proj-title" id="HOME_PROJ_TITLE"></div>
+      <div id="HOME_PROJ_ITEMS"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ CANVAS ══════════ -->
+<div id="pg-canvas" class="pg">
   <div id="cv-bg"></div>
   <svg id="cv-svg"></svg>
-  <div id="empty-hint" class="on">
-    <div class="eh-i">💡</div>
-    <div class="eh-t">اضغط ✨ فكرتى<br>لإضافة فكرة جديدة</div>
+  <div id="cv-empty">
+    <div class="cv-empty-ico">💡</div>
+    <div class="cv-empty-txt">اضغط ✨ فكرتى<br>لإضافة فكرة جديدة</div>
   </div>
   <div id="toolbar">
     <div style="position:relative">
-      <button class="tbtn tbtn-main" id="btn-main-dd">✨ فكرتى</button>
-      <div class="dd" id="dd-main">
-        <div class="dd-ttl">القائمة الرئيسية</div>
-        <button class="dd-btn" id="btn-dd-home"><span>🏠</span>الصفحة الرئيسية</button>
-        <button class="dd-btn" id="btn-dd-add"><span>➕</span>إضافة فكرة</button>
-        <button class="dd-btn" id="btn-dd-notif"><span>🔔</span>التنبيهات</button>
-        <button class="dd-btn" id="btn-dd-logout" style="color:#FF6B6B"><span>🚪</span>تسجيل الخروج</button>
+      <button class="tb-btn tb-btn-main" id="BTN_MAIN_DD">✨ فكرتى</button>
+      <div class="dropdown" id="DD_MAIN">
+        <div class="dd-header">القائمة الرئيسية</div>
+        <button class="dd-item" id="DD_GO_HOME"><span>🏠</span>الصفحة الرئيسية</button>
+        <button class="dd-item" id="DD_ADD_CARD"><span>➕</span>إضافة فكرة جديدة</button>
+        <button class="dd-item" id="DD_NOTIF"><span>🔔</span>التنبيهات</button>
+        <button class="dd-item" id="DD_LOGOUT" style="color:#FF6B6B"><span>🚪</span>تسجيل الخروج</button>
         <div class="dd-sep"></div>
-        <div class="dd-sub" id="dd-proj-hd">المشروعات</div>
-        <div id="dd-proj-list"></div>
+        <div class="dd-sub-title" id="DD_PROJ_HD">المشروعات</div>
+        <div id="DD_PROJ_LIST"></div>
       </div>
     </div>
     <div style="position:relative">
-      <button class="tbtn tbtn-style" id="btn-style-dd">🎨 استايل</button>
-      <div class="dd" id="dd-style">
-        <div class="dd-ttl" style="text-align:center">🎨 اختر استايل الصفحة</div>
-        <div class="sg" id="sg"></div>
+      <button class="tb-btn tb-btn-style" id="BTN_STYLE_DD">🎨 استايل</button>
+      <div class="dropdown" id="DD_STYLE">
+        <div class="dd-header" style="text-align:center">🎨 اختر استايل الصفحة</div>
+        <div class="style-grid" id="STYLE_GRID"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══ TASK PANEL ══ -->
+<!-- ══════════ TASK PANEL ══════════ -->
 <div id="task-panel">
-  <div class="tp-hd">
-    <div><div class="tp-lbl" id="tp-lbl"></div><div class="tp-cn" id="tp-cn"></div></div>
-    <button class="tp-x" id="btn-tp-x">✕</button>
+  <div class="tp-top">
+    <div>
+      <div class="tp-node-label" id="TP_LABEL"></div>
+      <div class="tp-card-name"  id="TP_CARD_NAME"></div>
+    </div>
+    <button class="tp-close" id="BTN_TP_CLOSE">✕</button>
   </div>
-  <div class="tp-sect">📅 وقت وتاريخ</div>
-  <input type="datetime-local" class="tp-dt" id="tp-dt">
-  <button class="tp-save" id="btn-tp-save">💾 حفظ الموعد</button>
-  <div class="tp-div"></div>
-  <div class="tp-sect">📝 المهام</div>
-  <div class="t-list" id="t-list"></div>
-  <div class="t-add">
-    <input class="t-inp" id="t-inp" placeholder="أضف مهمة...">
-    <button class="t-addbtn" id="btn-t-add">+</button>
+  <div class="tp-section-title">📅 وقت وتاريخ</div>
+  <input type="datetime-local" class="tp-datetime" id="TP_DT">
+  <button class="tp-save-dt" id="BTN_TP_SAVE">💾 حفظ الموعد</button>
+  <div class="tp-divider"></div>
+  <div class="tp-section-title">📝 المهام</div>
+  <div class="task-list-wrap" id="TASK_LIST"></div>
+  <div class="task-add-row">
+    <input class="task-add-inp" id="TASK_INP" placeholder="أضف مهمة...">
+    <button class="task-add-submit" id="BTN_TASK_ADD">+</button>
   </div>
 </div>
 
-<div id="toast"></div>
-<div id="inst-banner">
-  <div class="ib-txt">ثبّت فكرتى<small>يعمل بدون إنترنت</small></div>
-  <button class="ib-yes" id="btn-inst-yes">تثبيت</button>
-  <button class="ib-no"  id="btn-inst-no">لاحقاً</button>
+<div id="toast-msg"></div>
+<div id="install-bar">
+  <div class="inst-txt">ثبّت فكرتى على جهازك<small>يعمل بدون إنترنت · سريع</small></div>
+  <button class="inst-yes" id="BTN_INST_YES">تثبيت</button>
+  <button class="inst-no"  id="BTN_INST_NO">لاحقاً</button>
 </div>
 
 <script>
-/* ═══════════════════════════════════════════
-   CONSTANTS
-═══════════════════════════════════════════ */
-const COLORS=[["#FF6B6B","#FF8E53"],["#A855F7","#EC4899"],["#06B6D4","#3B82F6"],["#10B981","#059669"],["#F59E0B","#F97316"],["#EF4444","#F43F5E"],["#8B5CF6","#6366F1"],["#14B8A6","#06B6D4"],["#FB923C","#FBBF24"],["#E879F9","#A855F7"],["#22D3EE","#6EE7B7"],["#FCD34D","#FB923C"]];
-const EMOJIS=["💡","🚀","⭐","🎯","🔮","🌟","💎","🎨","🔥","🌈","✨","🦋"];
-const QUOTES=["💡 كل فكرة عظيمة بدأت بخطوة صغيرة","🚀 ابدأ صغيراً وفكّر كبيراً","🌟 الإبداع لا حدود له","🎯 ركّز، نظّم، أنجز!","✨ أفكارك هي بذور النجاح","🔥 اليوم هو أفضل وقت للبدء","💎 العقل المنظّم يصنع المعجزات"];
-const PAGE_STYLES=[{id:"paper",label:"📄 ورق أصفر",bg:"#fdf6e3",line:"#e8d5a3",dark:false},{id:"white",label:"📃 أبيض نقي",bg:"#ffffff",line:"#dde3ff",dark:false},{id:"mint",label:"🌿 نعناعي",bg:"#f0fff4",line:"#a8e6cf",dark:false},{id:"lavender",label:"💜 لافندر",bg:"#f5f0ff",line:"#c9b1ff",dark:false},{id:"sunset",label:"🌅 غروب",bg:"#fff8f0",line:"#ffcc99",dark:false},{id:"dark",label:"🌙 ليلي",bg:"#0f0f1a",line:"#ffffff10",dark:true}];
-const NT={urgent:{label:"🔥 عاجل",color:"#FF6B6B",bg:"#fff0f0"},noturgent:{label:"✅ غير عاجل",color:"#10B981",bg:"#f0fff8"},do:{label:"⚡ افعل",color:"#3B82F6",bg:"#f0f4ff"},delegate:{label:"👥 تفويض",color:"#A855F7",bg:"#f8f0ff"},postpone:{label:"⏳ تأجيل",color:"#F59E0B",bg:"#fffbf0"}};
+/* ══════════════════════════════════════════════════
+   CONFIGURATION
+══════════════════════════════════════════════════ */
+var APP_VERSION = "3.0.0"; // bump this to bust cache
 
-/* ═══════════════════════════════════════════
-   AUTH  — per-user localStorage
-   Users stored at: fekrty_users   → { email: {name,passHash} }
-   Session stored at: fekrty_session → { email, name }
-   User data stored at: fekrty_data_{email} → { cards, nodes, styleId }
-═══════════════════════════════════════════ */
-const USERS_KEY    = "fekrty_users";
-const SESSION_KEY  = "fekrty_session";
-const dataKey = e => "fekrty_data_" + e.toLowerCase().trim();
+var CARD_COLORS = [
+  ["#FF6B6B","#FF8E53"],["#A855F7","#EC4899"],["#06B6D4","#3B82F6"],
+  ["#10B981","#059669"],["#F59E0B","#F97316"],["#EF4444","#F43F5E"],
+  ["#8B5CF6","#6366F1"],["#14B8A6","#06B6D4"],["#FB923C","#FBBF24"],
+  ["#E879F9","#A855F7"],["#22D3EE","#6EE7B7"],["#FCD34D","#FB923C"]
+];
+var CARD_EMOJIS = ["💡","🚀","⭐","🎯","🔮","🌟","💎","🎨","🔥","🌈","✨","🦋"];
+var MOTIVATIONAL = [
+  "💡 كل فكرة عظيمة بدأت بخطوة صغيرة",
+  "🚀 ابدأ صغيراً وفكّر كبيراً",
+  "🌟 الإبداع لا حدود له",
+  "🎯 ركّز، نظّم، أنجز!",
+  "✨ أفكارك هي بذور النجاح",
+  "🔥 اليوم هو أفضل وقت للبدء",
+  "💎 العقل المنظّم يصنع المعجزات"
+];
+var PAGE_THEMES = [
+  {id:"paper",    label:"📄 ورق أصفر", bg:"#fdf6e3", line:"#e8d5a3", dark:false},
+  {id:"white",    label:"📃 أبيض نقي", bg:"#ffffff", line:"#dde3ff", dark:false},
+  {id:"mint",     label:"🌿 نعناعي",   bg:"#f0fff4", line:"#a8e6cf", dark:false},
+  {id:"lavender", label:"💜 لافندر",   bg:"#f5f0ff", line:"#c9b1ff", dark:false},
+  {id:"sunset",   label:"🌅 غروب",     bg:"#fff8f0", line:"#ffcc99", dark:false},
+  {id:"dark",     label:"🌙 ليلي",     bg:"#0f0f1a", line:"#ffffff10",dark:true}
+];
+var NODE_DEFS = {
+  urgent:   {label:"🔥 عاجل",    color:"#FF6B6B", bg:"#fff0f0"},
+  noturgent:{label:"✅ غير عاجل",color:"#10B981", bg:"#f0fff8"},
+  do:       {label:"⚡ افعل",    color:"#3B82F6", bg:"#f0f4ff"},
+  delegate: {label:"👥 تفويض",  color:"#A855F7", bg:"#f8f0ff"},
+  postpone: {label:"⏳ تأجيل",  color:"#F59E0B", bg:"#fffbf0"}
+};
 
-function hashPass(p){
-  // simple deterministic hash (no crypto needed for local storage auth)
-  let h=0;
-  for(let i=0;i<p.length;i++){h=((h<<5)-h)+p.charCodeAt(i);h|=0;}
-  return h.toString(36);
-}
-function getUsers(){try{return JSON.parse(localStorage.getItem(USERS_KEY)||"{}");}catch(e){return{};}}
-function saveUsers(u){localStorage.setItem(USERS_KEY,JSON.stringify(u));}
-function getSession(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||"null");}catch(e){return null;}}
-function setSession(s){localStorage.setItem(SESSION_KEY,JSON.stringify(s));}
-function clearSession(){localStorage.removeItem(SESSION_KEY);}
+/* ══════════════════════════════════════════════════
+   AUTH STORAGE
+   - fekrty_users     : { "email": { name, ph } }
+   - fekrty_session   : { email, name }
+   - fekrty_data_XXX  : { cards, nodes, themeId }
+══════════════════════════════════════════════════ */
+var K_USERS   = "fekrty_users";
+var K_SESSION = "fekrty_session";
+function dataKey(email){ return "fekrty_data_" + email.toLowerCase().trim(); }
 
-function loadUserData(email){
-  try{const d=localStorage.getItem(dataKey(email));return d?JSON.parse(d):{cards:[],nodes:{},styleId:"paper"};}catch(e){return{cards:[],nodes:{},styleId:"paper"};}
-}
-function saveUserData(email,data){
-  try{localStorage.setItem(dataKey(email),JSON.stringify(data));}catch(e){}
-}
-
-/* ═══════════════════════════════════════════
-   GLOBAL STATE
-═══════════════════════════════════════════ */
-let session = null;   // {email, name}
-let D = {cards:[],nodes:{},styleId:"paper"};  // current user data
-let activeNode = null;
-let notifOn = false;
-let deferredPrompt = null;
-let qIdx = 0;
-
-const uid=()=>Math.random().toString(36).slice(2,8);
-const fmtDT=v=>{try{return new Date(v).toLocaleString("ar-EG",{dateStyle:"short",timeStyle:"short"});}catch(e){return v;}};
-const $=id=>document.getElementById(id);
-
-/* ═══════════════════════════════════════════
-   TOAST
-═══════════════════════════════════════════ */
-let tTimer=null;
-function toast$(m){
-  const t=$("toast");t.textContent=m;t.classList.add("on");
-  clearTimeout(tTimer);tTimer=setTimeout(()=>t.classList.remove("on"),2400);
+function simpleHash(str) {
+  var h = 5381;
+  for (var i = 0; i < str.length; i++) {
+    h = ((h << 5) + h) + str.charCodeAt(i);
+    h = h & h;
+  }
+  return (h >>> 0).toString(36);
 }
 
-/* ═══════════════════════════════════════════
-   SCREENS  — the ONE function that controls navigation
-═══════════════════════════════════════════ */
-function show(id){
-  document.querySelectorAll(".scr").forEach(s=>s.classList.remove("on"));
-  $(id).classList.add("on");
+function readUsers() {
+  try { return JSON.parse(localStorage.getItem(K_USERS) || "{}"); } catch(e) { return {}; }
+}
+function writeUsers(u) { localStorage.setItem(K_USERS, JSON.stringify(u)); }
+
+function readSession() {
+  try { return JSON.parse(localStorage.getItem(K_SESSION) || "null"); } catch(e) { return null; }
+}
+function writeSession(s) { localStorage.setItem(K_SESSION, JSON.stringify(s)); }
+function deleteSession()  { localStorage.removeItem(K_SESSION); }
+
+function readData(email) {
+  try { return JSON.parse(localStorage.getItem(dataKey(email)) || "null") || {cards:[],nodes:{},themeId:"paper"}; }
+  catch(e) { return {cards:[],nodes:{},themeId:"paper"}; }
+}
+function writeData(email, data) {
+  localStorage.setItem(dataKey(email), JSON.stringify(data));
 }
 
-/* ═══════════════════════════════════════════
-   AUTH FORMS
-═══════════════════════════════════════════ */
-function switchAuth(tab){
-  $("form-login").style.display  = tab==="login"  ? "block":"none";
-  $("form-signup").style.display = tab==="signup" ? "block":"none";
-  $("tab-login").classList.toggle("on",  tab==="login");
-  $("tab-signup").classList.toggle("on", tab==="signup");
-  $("auth-err").textContent="";
+/* ══════════════════════════════════════════════════
+   APP STATE
+══════════════════════════════════════════════════ */
+var currentUser = null;   // { email, name }
+var appData = { cards:[], nodes:{}, themeId:"paper" };
+var activeNodeRef = null; // { cardId, nodeId }
+var notifEnabled = false;
+var installPrompt = null;
+var quoteIndex = 0;
+
+/* ══════════════════════════════════════════════════
+   UTILITIES
+══════════════════════════════════════════════════ */
+function makeId() { return Math.random().toString(36).slice(2, 8); }
+
+function formatDT(v) {
+  try { return new Date(v).toLocaleString("ar-EG", {dateStyle:"short", timeStyle:"short"}); }
+  catch(e) { return v; }
 }
 
-function doLogin(){
-  const email=$("li-email").value.trim();
-  const pass=$("li-pass").value;
-  const err=$("auth-err");
-  if(!email||!pass){err.textContent="أدخل البريد وكلمة المرور";return;}
-  const users=getUsers();
-  const u=users[email.toLowerCase()];
-  if(!u){err.textContent="البريد غير مسجّل — أنشئ حساباً جديداً";return;}
-  if(u.passHash!==hashPass(pass)){err.textContent="كلمة المرور غير صحيحة";return;}
-  loginSuccess(email,u.name);
+function el(id) { return document.getElementById(id); }
+
+var toastTimer = null;
+function showToast(msg) {
+  var t = el("toast-msg");
+  t.textContent = msg;
+  t.classList.add("visible");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove("visible"); }, 2500);
 }
 
-function doSignup(){
-  const name=$("su-name").value.trim();
-  const email=$("su-email").value.trim().toLowerCase();
-  const pass=$("su-pass").value;
-  const pass2=$("su-pass2").value;
-  const err=$("auth-err");
-  if(!name){err.textContent="أدخل اسمك";return;}
-  if(!email||!email.includes("@")){err.textContent="أدخل بريداً إلكترونياً صحيحاً";return;}
-  if(pass.length<6){err.textContent="كلمة المرور يجب أن تكون 6 أحرف على الأقل";return;}
-  if(pass!==pass2){err.textContent="كلمتا المرور غير متطابقتين";return;}
-  const users=getUsers();
-  if(users[email]){err.textContent="هذا البريد مسجّل بالفعل — سجّل الدخول";return;}
-  users[email]={name,passHash:hashPass(pass)};
-  saveUsers(users);
-  loginSuccess(email,name);
-  toast$("🎉 تم إنشاء حسابك بنجاح!");
+/* ══════════════════════════════════════════════════
+   SCREEN SWITCHER  ← THE ONLY WAY TO CHANGE SCREEN
+══════════════════════════════════════════════════ */
+function goToPage(pageId) {
+  console.log("goToPage:", pageId);
+  var pages = document.querySelectorAll(".pg");
+  for (var i = 0; i < pages.length; i++) {
+    pages[i].classList.remove("show");
+  }
+  var target = el(pageId);
+  if (target) {
+    target.classList.add("show");
+  } else {
+    console.error("Page not found:", pageId);
+  }
 }
 
-function doGuest(){
-  const email="guest_"+Date.now();
-  loginSuccess(email,"زائر",true);
-}
-
-function loginSuccess(email,name,guest=false){
-  session={email,name,guest};
-  setSession(session);
-  D=loadUserData(email);
-  $("hm-username").textContent=name;
-  $("auth-err").textContent="";
-  show("s-home");
-  renderHome();
-}
-
-function doLogout(){
-  clearSession();
-  session=null;
-  D={cards:[],nodes:{},styleId:"paper"};
-  activeNode=null;
-  closeAllDD();
-  closeTP();
-  show("s-auth");
-  switchAuth("login");
-  toast$("تم تسجيل الخروج");
-}
-
-function saveD(){
-  if(session) saveUserData(session.email, D);
-}
-
-/* ═══════════════════════════════════════════
+/* ══════════════════════════════════════════════════
    QUOTES
-═══════════════════════════════════════════ */
-function tickQ(){
-  qIdx=(qIdx+1)%QUOTES.length;
-  const q=QUOTES[qIdx];
-  const a=$("sp-q"); if(a)a.textContent=q;
-  const b=$("hm-q"); if(b)b.textContent=q;
+══════════════════════════════════════════════════ */
+function rotateQuote() {
+  quoteIndex = (quoteIndex + 1) % MOTIVATIONAL.length;
+  var q = MOTIVATIONAL[quoteIndex];
+  var a = el("sp-quote-txt");   if (a) a.textContent = q;
+  var b = el("HOME_QUOTE_TXT"); if (b) b.textContent = q;
 }
-setInterval(tickQ,3500);
+setInterval(rotateQuote, 3500);
 
-/* ═══════════════════════════════════════════
+/* ══════════════════════════════════════════════════
+   AUTH LOGIC
+══════════════════════════════════════════════════ */
+function switchAuthTab(tab) {
+  el("FORM_LOGIN").style.display  = (tab === "login")  ? "block" : "none";
+  el("FORM_SIGNUP").style.display = (tab === "signup") ? "block" : "none";
+  el("TAB_LOGIN").classList.toggle("active",  tab === "login");
+  el("TAB_SIGNUP").classList.toggle("active", tab === "signup");
+  el("AUTH_ERR").textContent = "";
+}
+
+function setAuthError(msg) {
+  el("AUTH_ERR").textContent = msg;
+}
+
+function doLogin() {
+  var email = el("LI_EMAIL").value.trim().toLowerCase();
+  var pass  = el("LI_PASS").value;
+  if (!email || !pass) { setAuthError("أدخل البريد وكلمة المرور"); return; }
+  var users = readUsers();
+  if (!users[email]) { setAuthError("هذا البريد غير مسجّل — أنشئ حساباً"); return; }
+  if (users[email].ph !== simpleHash(pass)) { setAuthError("كلمة المرور غير صحيحة"); return; }
+  finishLogin(email, users[email].name);
+}
+
+function doSignup() {
+  var name   = el("SU_NAME").value.trim();
+  var email  = el("SU_EMAIL").value.trim().toLowerCase();
+  var pass   = el("SU_PASS").value;
+  var pass2  = el("SU_PASS2").value;
+  if (!name)  { setAuthError("أدخل اسمك"); return; }
+  if (!email || email.indexOf("@") < 0) { setAuthError("أدخل بريداً صحيحاً"); return; }
+  if (pass.length < 6) { setAuthError("كلمة المرور يجب 6 أحرف على الأقل"); return; }
+  if (pass !== pass2)  { setAuthError("كلمتا المرور غير متطابقتين"); return; }
+  var users = readUsers();
+  if (users[email]) { setAuthError("هذا البريد مسجّل مسبقاً — سجّل الدخول"); return; }
+  users[email] = { name: name, ph: simpleHash(pass) };
+  writeUsers(users);
+  finishLogin(email, name);
+  showToast("🎉 تم إنشاء حسابك بنجاح!");
+}
+
+function doGuest() {
+  var gid = "guest_" + Date.now();
+  finishLogin(gid, "زائر");
+}
+
+function finishLogin(email, name) {
+  currentUser = { email: email, name: name };
+  writeSession(currentUser);
+  appData = readData(email);
+  el("AUTH_ERR").textContent = "";
+  el("HOME_USERNAME").textContent = name;
+  renderHomeProjects();
+  goToPage("pg-home");
+}
+
+function doLogout() {
+  deleteSession();
+  currentUser = null;
+  appData = { cards:[], nodes:{}, themeId:"paper" };
+  activeNodeRef = null;
+  closeAllDropdowns();
+  closeTaskPanel();
+  goToPage("pg-auth");
+  switchAuthTab("login");
+  showToast("تم تسجيل الخروج");
+}
+
+function persistData() {
+  if (currentUser) writeData(currentUser.email, appData);
+}
+
+/* ══════════════════════════════════════════════════
    DROPDOWNS
-═══════════════════════════════════════════ */
-function toggleDD(id){
-  const dd=$(id),was=dd.classList.contains("on");
-  closeAllDD();
-  if(!was){dd.classList.add("on");if(id==="dd-main")renderProjList();}
+══════════════════════════════════════════════════ */
+function toggleDropdown(id) {
+  var dd = el(id);
+  var isOpen = dd.classList.contains("open");
+  closeAllDropdowns();
+  if (!isOpen) {
+    dd.classList.add("open");
+    if (id === "DD_MAIN") renderDropdownProjects();
+  }
 }
-function closeAllDD(){document.querySelectorAll(".dd").forEach(d=>d.classList.remove("on"));}
-
-/* ═══════════════════════════════════════════
-   STYLE
-═══════════════════════════════════════════ */
-function renderSG(){
-  const sg=$("sg");if(!sg)return;
-  sg.innerHTML=PAGE_STYLES.map(ps=>`<div class="sg-opt ${D.styleId===ps.id?"sel":""}" style="background:${ps.bg};color:${ps.dark?"#fff":"#555"}" onclick="setStyle('${ps.id}')">${ps.label}</div>`).join("");
-}
-function setStyle(id){D.styleId=id;saveD();applyStyle();renderSG();closeAllDD();toast$("🎨 تم التغيير");}
-function applyStyle(){
-  const ps=PAGE_STYLES.find(p=>p.id===D.styleId)||PAGE_STYLES[0];
-  const bg=$("cv-bg");if(!bg)return;
-  bg.style.background=ps.bg;
-  bg.style.backgroundImage=`repeating-linear-gradient(0deg,transparent,transparent 29px,${ps.line} 30px),repeating-linear-gradient(90deg,transparent,transparent 29px,${ps.line} 30px)`;
-  const eh=$("empty-hint");if(eh)eh.querySelector(".eh-t").style.color=ps.dark?"rgba(255,255,255,.3)":"#bbb";
+function closeAllDropdowns() {
+  var dds = document.querySelectorAll(".dropdown");
+  for (var i = 0; i < dds.length; i++) dds[i].classList.remove("open");
 }
 
-/* ═══════════════════════════════════════════
+/* ══════════════════════════════════════════════════
+   THEME
+══════════════════════════════════════════════════ */
+function renderStyleGrid() {
+  var grid = el("STYLE_GRID");
+  if (!grid) return;
+  var html = "";
+  for (var i = 0; i < PAGE_THEMES.length; i++) {
+    var t = PAGE_THEMES[i];
+    html += '<div class="style-opt' + (appData.themeId === t.id ? " selected" : "") + '"'
+      + ' style="background:' + t.bg + ';color:' + (t.dark?"#fff":"#555") + '"'
+      + ' onclick="applyTheme(\'' + t.id + '\')">' + t.label + '</div>';
+  }
+  grid.innerHTML = html;
+}
+function applyTheme(id) {
+  appData.themeId = id;
+  persistData();
+  paintCanvasBg();
+  renderStyleGrid();
+  closeAllDropdowns();
+  showToast("🎨 تم تغيير الاستايل");
+}
+function paintCanvasBg() {
+  var theme = null;
+  for (var i = 0; i < PAGE_THEMES.length; i++) {
+    if (PAGE_THEMES[i].id === appData.themeId) { theme = PAGE_THEMES[i]; break; }
+  }
+  if (!theme) theme = PAGE_THEMES[0];
+  var bg = el("cv-bg");
+  if (!bg) return;
+  bg.style.background = theme.bg;
+  bg.style.backgroundImage =
+    "repeating-linear-gradient(0deg,transparent,transparent 29px," + theme.line + " 30px),"
+    + "repeating-linear-gradient(90deg,transparent,transparent 29px," + theme.line + " 30px)";
+  var emptyTxt = document.querySelector(".cv-empty-txt");
+  if (emptyTxt) emptyTxt.style.color = theme.dark ? "rgba(255,255,255,.3)" : "#bbb";
+}
+
+/* ══════════════════════════════════════════════════
    CARDS
-═══════════════════════════════════════════ */
-function addCard(){
-  if(D.cards.length>=30){toast$("الحد الأقصى 30 فكرة");return;}
-  const idx=D.cards.length;
-  const [c1,c2]=COLORS[idx%COLORS.length];
-  const cv=$("s-canvas");
-  const cw=cv.offsetWidth||window.innerWidth;
-  const ch=cv.offsetHeight||window.innerHeight;
-  D.cards.push({id:uid(),title:"فكرة جديدة",emoji:EMOJIS[idx%EMOJIS.length],x:Math.max(16,Math.random()*(cw-220)),y:Math.max(80,Math.random()*(ch-180)),c1,c2});
-  saveD();
-  show("s-canvas");
+══════════════════════════════════════════════════ */
+function addCard() {
+  if (appData.cards.length >= 30) { showToast("الحد الأقصى 30 فكرة"); return; }
+  var idx = appData.cards.length;
+  var colors = CARD_COLORS[idx % CARD_COLORS.length];
+  var cv = el("pg-canvas");
+  var cw = cv ? cv.offsetWidth : window.innerWidth;
+  var ch = cv ? cv.offsetHeight : window.innerHeight;
+  appData.cards.push({
+    id: makeId(),
+    title: "فكرة جديدة",
+    emoji: CARD_EMOJIS[idx % CARD_EMOJIS.length],
+    x: Math.max(16, Math.random() * (cw - 220)),
+    y: Math.max(80, Math.random() * (ch - 180)),
+    c1: colors[0], c2: colors[1]
+  });
+  persistData();
+  goToPage("pg-canvas");
   renderCanvas();
-  toast$("تمت الإضافة ✓");
+  showToast("تمت الإضافة ✓");
 }
 
-function deleteCard(cardId){
-  D.cards=D.cards.filter(c=>c.id!==cardId);
-  delete D.nodes[cardId];
-  if(activeNode&&activeNode.cardId===cardId)closeTP();
-  saveD();renderCanvas();toast$("تم الحذف");
+function removeCard(cardId) {
+  appData.cards = appData.cards.filter(function(c){ return c.id !== cardId; });
+  delete appData.nodes[cardId];
+  if (activeNodeRef && activeNodeRef.cardId === cardId) closeTaskPanel();
+  persistData();
+  renderCanvas();
+  showToast("تم الحذف");
 }
 
-function updateTitle(id,title){
-  const c=D.cards.find(x=>x.id===id);
-  if(c){c.title=title;saveD();}
+function updateCardTitle(cardId, newTitle) {
+  var card = appData.cards.find(function(c){ return c.id === cardId; });
+  if (card) { card.title = newTitle; persistData(); }
 }
 
-/* ═══════════════════════════════════════════
+/* ══════════════════════════════════════════════════
    NODES
-═══════════════════════════════════════════ */
-function addNode(cardId,type){
-  const card=D.cards.find(c=>c.id===cardId);if(!card)return;
-  if(!D.nodes[cardId])D.nodes[cardId]=[];
-  const ex=D.nodes[cardId];
-  const already=ex.find(n=>n.type===type);
-  if(already){openTP(cardId,already.id);return;}
-  const angle=(-Math.PI/2)+ex.length*0.9;
-  const cv=$("s-canvas");
-  const dist=Math.min(170,cv?cv.offsetWidth*0.35:170);
-  ex.push({id:uid(),type,x:Math.max(4,card.x+dist*Math.cos(angle)),y:Math.max(4,card.y+dist*Math.sin(angle)),tasks:[],dt:""});
-  saveD();renderCanvas();openTP(cardId,ex[ex.length-1].id);
+══════════════════════════════════════════════════ */
+function addNodeToCard(cardId, nodeType) {
+  var card = appData.cards.find(function(c){ return c.id === cardId; });
+  if (!card) return;
+  if (!appData.nodes[cardId]) appData.nodes[cardId] = [];
+  var list = appData.nodes[cardId];
+  var existing = null;
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].type === nodeType) { existing = list[i]; break; }
+  }
+  if (existing) { openTaskPanel(cardId, existing.id); return; }
+  var angle = (-Math.PI / 2) + list.length * 0.9;
+  var dist = 165;
+  var newNode = {
+    id: makeId(), type: nodeType,
+    x: Math.max(4, card.x + dist * Math.cos(angle)),
+    y: Math.max(4, card.y + dist * Math.sin(angle)),
+    tasks: [], dt: ""
+  };
+  list.push(newNode);
+  persistData();
+  renderCanvas();
+  openTaskPanel(cardId, newNode.id);
 }
 
-function patchNode(cid,nid,patch){
-  const n=(D.nodes[cid]||[]).find(x=>x.id===nid);
-  if(n){Object.assign(n,patch);saveD();}
+function getNodeById(cardId, nodeId) {
+  var list = appData.nodes[cardId] || [];
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].id === nodeId) return list[i];
+  }
+  return null;
 }
 
-/* ═══════════════════════════════════════════
+function patchNodeData(cardId, nodeId, patch) {
+  var node = getNodeById(cardId, nodeId);
+  if (!node) return;
+  for (var k in patch) node[k] = patch[k];
+  persistData();
+}
+
+/* ══════════════════════════════════════════════════
    TASK PANEL
-═══════════════════════════════════════════ */
-function openTP(cardId,nodeId){
-  activeNode={cardId,nodeId};
-  const card=D.cards.find(c=>c.id===cardId);
-  const node=(D.nodes[cardId]||[]).find(n=>n.id===nodeId);
-  if(!node)return;
-  const info=NT[node.type];
-  $("tp-lbl").textContent=info.label;$("tp-lbl").style.color=info.color;
-  $("tp-cn").textContent=card?card.emoji+" "+card.title:"";
-  $("tp-dt").value=node.dt||"";
-  $("btn-tp-save").style.background=`linear-gradient(90deg,${info.color},${info.color}bb)`;
-  $("btn-t-add").style.background=info.color;
-  renderTL();
-  const cv=$("s-canvas");
-  const cw=cv.offsetWidth,ch=cv.offsetHeight;
-  const pw=252,ph=340;
-  let px=node.x+128,py=node.y;
-  if(px+pw>cw-10)px=node.x-pw-8;
-  if(py+ph>ch-8) py=ch-ph-8;
-  if(px<8)px=8;if(py<8)py=8;
-  const tp=$("task-panel");
-  tp.style.left=px+"px";tp.style.top=py+"px";tp.classList.add("on");
+══════════════════════════════════════════════════ */
+function openTaskPanel(cardId, nodeId) {
+  activeNodeRef = { cardId: cardId, nodeId: nodeId };
+  var card = appData.cards.find(function(c){ return c.id === cardId; });
+  var node = getNodeById(cardId, nodeId);
+  if (!node) return;
+  var def = NODE_DEFS[node.type];
+
+  el("TP_LABEL").textContent = def.label;
+  el("TP_LABEL").style.color = def.color;
+  el("TP_CARD_NAME").textContent = card ? card.emoji + " " + card.title : "";
+  el("TP_DT").value = node.dt || "";
+  el("BTN_TP_SAVE").style.background = "linear-gradient(90deg," + def.color + "," + def.color + "bb)";
+  el("BTN_TASK_ADD").style.background = def.color;
+
+  renderTaskList();
+
+  // Position panel
+  var cv = el("pg-canvas");
+  var cw = cv.offsetWidth, ch = cv.offsetHeight;
+  var pw = 252, ph = 340;
+  var px = node.x + 128, py = node.y;
+  if (px + pw > cw - 10) px = node.x - pw - 8;
+  if (py + ph > ch - 8)  py = ch - ph - 8;
+  if (px < 8) px = 8;
+  if (py < 8) py = 8;
+
+  var panel = el("task-panel");
+  panel.style.left = px + "px";
+  panel.style.top  = py + "px";
+  panel.classList.add("open");
   renderCanvas();
 }
 
-function closeTP(){activeNode=null;$("task-panel").classList.remove("on");renderCanvas();}
-
-function saveDT(){
-  if(!activeNode)return;
-  patchNode(activeNode.cardId,activeNode.nodeId,{dt:$("tp-dt").value});
-  renderCanvas();toast$("📅 تم حفظ الموعد");
+function closeTaskPanel() {
+  activeNodeRef = null;
+  el("task-panel").classList.remove("open");
+  renderCanvas();
 }
 
-function addTask(){
-  const inp=$("t-inp");
-  if(!activeNode||!inp.value.trim())return;
-  const {cardId,nodeId}=activeNode;
-  const node=(D.nodes[cardId]||[]).find(n=>n.id===nodeId);
-  if(!node)return;
-  node.tasks=[...(node.tasks||[]),{id:uid(),text:inp.value.trim(),done:false}];
-  inp.value="";saveD();renderTL();renderCanvas();
+function saveNodeDatetime() {
+  if (!activeNodeRef) return;
+  patchNodeData(activeNodeRef.cardId, activeNodeRef.nodeId, { dt: el("TP_DT").value });
+  renderCanvas();
+  showToast("📅 تم حفظ الموعد");
 }
 
-function toggleTask(tid){
-  if(!activeNode)return;
-  const node=(D.nodes[activeNode.cardId]||[]).find(n=>n.id===activeNode.nodeId);
-  if(!node)return;
-  const t=node.tasks.find(x=>x.id===tid);if(t)t.done=!t.done;
-  saveD();renderTL();renderCanvas();
+function addTaskToNode() {
+  var inp = el("TASK_INP");
+  if (!activeNodeRef || !inp.value.trim()) return;
+  var node = getNodeById(activeNodeRef.cardId, activeNodeRef.nodeId);
+  if (!node) return;
+  if (!node.tasks) node.tasks = [];
+  node.tasks.push({ id: makeId(), text: inp.value.trim(), done: false });
+  inp.value = "";
+  persistData();
+  renderTaskList();
+  renderCanvas();
 }
 
-function deleteTask(tid){
-  if(!activeNode)return;
-  const node=(D.nodes[activeNode.cardId]||[]).find(n=>n.id===activeNode.nodeId);
-  if(!node)return;
-  node.tasks=node.tasks.filter(t=>t.id!==tid);
-  saveD();renderTL();renderCanvas();
+function toggleTaskDone(taskId) {
+  if (!activeNodeRef) return;
+  var node = getNodeById(activeNodeRef.cardId, activeNodeRef.nodeId);
+  if (!node) return;
+  for (var i = 0; i < node.tasks.length; i++) {
+    if (node.tasks[i].id === taskId) { node.tasks[i].done = !node.tasks[i].done; break; }
+  }
+  persistData();
+  renderTaskList();
+  renderCanvas();
 }
 
-function renderTL(){
-  if(!activeNode)return;
-  const {cardId,nodeId}=activeNode;
-  const node=(D.nodes[cardId]||[]).find(n=>n.id===nodeId);
-  const info=node?NT[node.type]:null;
-  const list=$("t-list");
-  if(!node||!info){list.innerHTML="";return;}
-  if(!(node.tasks||[]).length){list.innerHTML='<div style="font-size:12px;color:#ddd;text-align:center;padding:8px 0">لا توجد مهام بعد</div>';return;}
-  list.innerHTML=node.tasks.map(t=>`<div class="t-row">
-    <div class="t-chk" onclick="toggleTask('${t.id}')" style="border-color:${info.color};background:${t.done?info.color:"transparent"}">${t.done?"✓":""}</div>
-    <span class="t-txt ${t.done?"t-done":""}">${t.text}</span>
-    <button class="t-del" onclick="deleteTask('${t.id}')">✕</button>
-  </div>`).join("");
+function removeTask(taskId) {
+  if (!activeNodeRef) return;
+  var node = getNodeById(activeNodeRef.cardId, activeNodeRef.nodeId);
+  if (!node) return;
+  node.tasks = node.tasks.filter(function(t){ return t.id !== taskId; });
+  persistData();
+  renderTaskList();
+  renderCanvas();
 }
 
-/* ═══════════════════════════════════════════
-   HOME RENDER
-═══════════════════════════════════════════ */
-function renderHome(){
-  const hl=$("hm-list");
-  if(!D.cards.length){hl.style.display="none";return;}
-  hl.style.display="block";
-  $("hm-list-hd").textContent="المشروعات المحفوظة ("+D.cards.length+")";
-  $("hm-list-items").innerHTML=D.cards.map(c=>{
-    const urg=(D.nodes[c.id]||[]).find(n=>n.type==="urgent");
-    return `<div class="hm-row" onclick="show('s-canvas');renderCanvas()">
-      <div class="hm-dot" style="background:${c.c1}"></div>
-      <span>${c.emoji} ${c.title}</span>
-      ${urg?'<span style="margin-right:auto;font-size:11px">🔥</span>':""}
-    </div>`;
-  }).join("");
+function renderTaskList() {
+  if (!activeNodeRef) return;
+  var node = getNodeById(activeNodeRef.cardId, activeNodeRef.nodeId);
+  var def  = node ? NODE_DEFS[node.type] : null;
+  var listEl = el("TASK_LIST");
+  if (!node || !def) { listEl.innerHTML = ""; return; }
+  if (!node.tasks || node.tasks.length === 0) {
+    listEl.innerHTML = '<div style="font-size:12px;color:#ddd;text-align:center;padding:8px 0">لا توجد مهام بعد</div>';
+    return;
+  }
+  var html = "";
+  for (var i = 0; i < node.tasks.length; i++) {
+    var t = node.tasks[i];
+    html += '<div class="task-item">'
+      + '<div class="task-check" onclick="toggleTaskDone(\'' + t.id + '\')"'
+      + ' style="border-color:' + def.color + ';background:' + (t.done ? def.color : "transparent") + '">'
+      + (t.done ? "✓" : "") + '</div>'
+      + '<span class="task-text ' + (t.done ? "done" : "") + '">' + t.text + '</span>'
+      + '<button class="task-del-btn" onclick="removeTask(\'' + t.id + '\')">✕</button>'
+      + '</div>';
+  }
+  listEl.innerHTML = html;
 }
 
-function renderProjList(){
-  const pl=$("dd-proj-list"),ph=$("dd-proj-hd");
-  if(!D.cards.length){ph.textContent="لا يوجد مشروعات بعد";pl.innerHTML="";return;}
-  ph.textContent="المشروعات ("+D.cards.length+")";
-  pl.innerHTML=D.cards.map(c=>`<div class="dd-proj">
-    <div style="width:9px;height:9px;border-radius:3px;background:${c.c1};flex-shrink:0"></div>
-    <span style="flex:1">${c.emoji} ${c.title}</span>
-    <button class="dd-pdel" onclick="event.stopPropagation();deleteCard('${c.id}')">🗑</button>
-  </div>`).join("");
+/* ══════════════════════════════════════════════════
+   HOME PROJECTS
+══════════════════════════════════════════════════ */
+function renderHomeProjects() {
+  var projEl = el("HOME_PROJ_LIST");
+  if (!appData.cards.length) { projEl.style.display = "none"; return; }
+  projEl.style.display = "block";
+  el("HOME_PROJ_TITLE").textContent = "المشروعات المحفوظة (" + appData.cards.length + ")";
+  var html = "";
+  for (var i = 0; i < appData.cards.length; i++) {
+    var c = appData.cards[i];
+    var nodes = appData.nodes[c.id] || [];
+    var hasUrgent = nodes.some(function(n){ return n.type === "urgent"; });
+    html += '<div class="home-proj-row" onclick="goToPage(\'pg-canvas\');renderCanvas()">'
+      + '<div class="home-proj-dot" style="background:' + c.c1 + '"></div>'
+      + '<span>' + c.emoji + ' ' + c.title + '</span>'
+      + (hasUrgent ? '<span style="margin-right:auto;font-size:11px">🔥</span>' : '')
+      + '</div>';
+  }
+  el("HOME_PROJ_ITEMS").innerHTML = html;
 }
 
-/* ═══════════════════════════════════════════
+function renderDropdownProjects() {
+  var list = el("DD_PROJ_LIST"), hd = el("DD_PROJ_HD");
+  if (!appData.cards.length) { hd.textContent = "لا يوجد مشروعات بعد"; list.innerHTML = ""; return; }
+  hd.textContent = "المشروعات (" + appData.cards.length + ")";
+  var html = "";
+  for (var i = 0; i < appData.cards.length; i++) {
+    var c = appData.cards[i];
+    html += '<div class="dd-proj-item">'
+      + '<div style="width:9px;height:9px;border-radius:3px;background:' + c.c1 + ';flex-shrink:0"></div>'
+      + '<span style="flex:1">' + c.emoji + ' ' + c.title + '</span>'
+      + '<button class="dd-proj-del" onclick="event.stopPropagation();removeCard(\'' + c.id + '\')">🗑</button>'
+      + '</div>';
+  }
+  list.innerHTML = html;
+}
+
+/* ══════════════════════════════════════════════════
    CANVAS RENDER
-═══════════════════════════════════════════ */
-function renderCanvas(){
-  applyStyle();
-  const eh=$("empty-hint");
-  if(eh)eh.classList.toggle("on",D.cards.length===0);
-  document.querySelectorAll(".card,.node").forEach(e=>e.remove());
-  const cv=$("s-canvas"),svg=$("cv-svg");
-  let svgH="";
-  D.cards.forEach(card=>{
-    const cns=D.nodes[card.id]||[];
-    cns.forEach(node=>{
-      const info=NT[node.type];
-      svgH+=`<line x1="${card.x+76}" y1="${card.y+40}" x2="${node.x+59}" y2="${node.y+25}" stroke="${info.color}" stroke-width="2.5" stroke-dasharray="7 4" opacity=".65"/>
-      <circle cx="${node.x+59}" cy="${node.y+25}" r="5" fill="${info.color}" opacity=".9"/>`;
-    });
-    // Card
-    const el=document.createElement("div");
-    el.className="card";el.id="c-"+card.id;
-    el.style.cssText=`left:${card.x}px;top:${card.y}px;background:linear-gradient(135deg,${card.c1},${card.c2})`;
-    el.innerHTML=`<div class="c-row"><span class="c-emoji">${card.emoji}</span>
-      <input class="c-inp" value="${card.title.replace(/"/g,"&quot;")}" placeholder="اسم الفكرة"
-        onchange="updateTitle('${card.id}',this.value)" onclick="event.stopPropagation()">
-    </div>
-    <div class="c-tags">
-      ${Object.entries(NT).map(([t,i])=>`<button class="ctag" onclick="event.stopPropagation();addNode('${card.id}','${t}')">${i.label}</button>`).join("")}
-      <button class="ctag ctag-del" onclick="event.stopPropagation();deleteCard('${card.id}')">🗑️</button>
-    </div>
-    ${cns.length?`<div class="c-mini">${cns.map(n=>`<span class="c-mbadge">${NT[n.type]?.label}${(n.tasks||[]).length?" ("+n.tasks.length+")":""}</span>`).join("")}</div>`:""}`;
-    makeDraggable(el,"card",card.id,null);
-    cv.appendChild(el);
-    // Nodes
-    cns.forEach(node=>{
-      const info=NT[node.type];
-      const isAct=activeNode&&activeNode.nodeId===node.id;
-      const nel=document.createElement("div");
-      nel.className="node"+(isAct?" act":"");nel.id="n-"+node.id;
-      nel.style.cssText=`left:${node.x}px;top:${node.y}px;background:${info.bg};border:1.5px solid ${info.color}30;${isAct?"box-shadow:0 0 0 3px "+info.color+",0 8px 28px rgba(0,0,0,.15)":""}`;
-      nel.innerHTML=`<div class="n-lbl" style="color:${info.color}">${info.label}</div>
-        ${(node.tasks||[]).length?`<div class="n-cnt">${(node.tasks||[]).filter(t=>t.done).length}/${(node.tasks||[]).length} مهام</div>`:""}
-        ${node.dt?`<div class="n-dt" style="color:${info.color}">📅 ${fmtDT(node.dt)}</div>`:""}`;
-      nel.addEventListener("click",e=>{e.stopPropagation();openTP(card.id,node.id);});
-      makeDraggable(nel,"node",node.id,card.id);
+══════════════════════════════════════════════════ */
+function renderCanvas() {
+  paintCanvasBg();
+
+  var emptyEl = el("cv-empty");
+  if (emptyEl) emptyEl.style.display = appData.cards.length ? "none" : "flex";
+
+  // Remove old cards and nodes
+  var oldCards = document.querySelectorAll(".idea-card");
+  for (var i = 0; i < oldCards.length; i++) oldCards[i].remove();
+  var oldNodes = document.querySelectorAll(".node-bubble");
+  for (var i = 0; i < oldNodes.length; i++) oldNodes[i].remove();
+
+  var cv  = el("pg-canvas");
+  var svg = el("cv-svg");
+  var svgContent = "";
+
+  for (var ci = 0; ci < appData.cards.length; ci++) {
+    var card = appData.cards[ci];
+    var cardNodes = appData.nodes[card.id] || [];
+
+    // SVG lines
+    for (var ni = 0; ni < cardNodes.length; ni++) {
+      var node = cardNodes[ni];
+      var def  = NODE_DEFS[node.type];
+      svgContent += '<line x1="' + (card.x+76) + '" y1="' + (card.y+40)
+        + '" x2="' + (node.x+59) + '" y2="' + (node.y+25)
+        + '" stroke="' + def.color + '" stroke-width="2.5" stroke-dasharray="7 4" opacity=".65"/>'
+        + '<circle cx="' + (node.x+59) + '" cy="' + (node.y+25) + '" r="5" fill="' + def.color + '" opacity=".9"/>';
+    }
+
+    // Card element
+    var cardEl = document.createElement("div");
+    cardEl.className = "idea-card";
+    cardEl.id = "card_" + card.id;
+    cardEl.style.cssText = "left:" + card.x + "px;top:" + card.y + "px;background:linear-gradient(135deg," + card.c1 + "," + card.c2 + ")";
+
+    var nodeTagsHtml = "";
+    if (cardNodes.length > 0) {
+      nodeTagsHtml = '<div class="card-node-tags">';
+      for (var ni2 = 0; ni2 < cardNodes.length; ni2++) {
+        var nd = cardNodes[ni2];
+        var taskCount = nd.tasks ? nd.tasks.length : 0;
+        nodeTagsHtml += '<span class="card-node-tag">' + NODE_DEFS[nd.type].label + (taskCount ? " (" + taskCount + ")" : "") + '</span>';
+      }
+      nodeTagsHtml += '</div>';
+    }
+
+    var nodeBtnsHtml = '';
+    var nodeKeys = Object.keys(NODE_DEFS);
+    for (var ki = 0; ki < nodeKeys.length; ki++) {
+      nodeBtnsHtml += '<button class="node-btn" onclick="event.stopPropagation();addNodeToCard(\'' + card.id + '\',\'' + nodeKeys[ki] + '\')">' + NODE_DEFS[nodeKeys[ki]].label + '</button>';
+    }
+
+    cardEl.innerHTML =
+      '<div class="card-top">'
+        + '<span class="card-emoji">' + card.emoji + '</span>'
+        + '<input class="card-title-inp" value="' + card.title.replace(/"/g,"&quot;") + '" placeholder="اسم الفكرة"'
+        + ' onchange="updateCardTitle(\'' + card.id + '\',this.value)"'
+        + ' onclick="event.stopPropagation()">'
+      + '</div>'
+      + '<div class="card-actions">'
+        + nodeBtnsHtml
+        + '<button class="del-btn" onclick="event.stopPropagation();removeCard(\'' + card.id + '\')">🗑️</button>'
+      + '</div>'
+      + nodeTagsHtml;
+
+    setupDrag(cardEl, "card", card.id, null);
+    cv.appendChild(cardEl);
+
+    // Node bubbles
+    for (var ni3 = 0; ni3 < cardNodes.length; ni3++) {
+      var nd2  = cardNodes[ni3];
+      var def2 = NODE_DEFS[nd2.type];
+      var isAct = activeNodeRef && activeNodeRef.nodeId === nd2.id;
+      var doneCount = (nd2.tasks || []).filter(function(t){ return t.done; }).length;
+
+      var nel = document.createElement("div");
+      nel.className = "node-bubble" + (isAct ? " is-active" : "");
+      nel.id = "node_" + nd2.id;
+      nel.style.cssText = "left:" + nd2.x + "px;top:" + nd2.y + "px;background:" + def2.bg
+        + ";border:1.5px solid " + def2.color + "30;"
+        + (isAct ? "box-shadow:0 0 0 3px " + def2.color + ",0 8px 28px rgba(0,0,0,.15);" : "");
+
+      nel.innerHTML =
+        '<div class="nb-label" style="color:' + def2.color + '">' + def2.label + '</div>'
+        + ((nd2.tasks && nd2.tasks.length) ? '<div class="nb-count">' + doneCount + '/' + nd2.tasks.length + ' مهام</div>' : '')
+        + (nd2.dt ? '<div class="nb-dt" style="color:' + def2.color + '">📅 ' + formatDT(nd2.dt) + '</div>' : '');
+
+      nel.addEventListener("click", (function(cid, nid){
+        return function(e){ e.stopPropagation(); openTaskPanel(cid, nid); };
+      })(card.id, nd2.id));
+
+      setupDrag(nel, "node", nd2.id, card.id);
       cv.appendChild(nel);
-    });
-  });
-  svg.innerHTML=svgH;
+    }
+  }
+
+  svg.innerHTML = svgContent;
 }
 
-/* ═══════════════════════════════════════════
+/* ══════════════════════════════════════════════════
    DRAG
-═══════════════════════════════════════════ */
-function makeDraggable(el,kind,id,cardId){
-  let ox=0,oy=0,active=false;
-  el.addEventListener("pointerdown",e=>{
-    if(["INPUT","BUTTON"].includes(e.target.tagName))return;
-    e.preventDefault();e.stopPropagation();
-    const r=$("s-canvas").getBoundingClientRect();
-    if(kind==="card"){const c=D.cards.find(x=>x.id===id);ox=e.clientX-r.left-c.x;oy=e.clientY-r.top-c.y;}
-    else{const n=(D.nodes[cardId]||[]).find(x=>x.id===id);if(!n)return;ox=e.clientX-r.left-n.x;oy=e.clientY-r.top-n.y;}
-    active=true;el.classList.add("drag");el.setPointerCapture(e.pointerId);
+══════════════════════════════════════════════════ */
+function setupDrag(element, kind, itemId, parentCardId) {
+  var startX = 0, startY = 0, origX = 0, origY = 0;
+  var dragging = false;
+
+  element.addEventListener("pointerdown", function(e) {
+    if (e.target.tagName === "INPUT" || e.target.tagName === "BUTTON") return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    var rect = el("pg-canvas").getBoundingClientRect();
+    if (kind === "card") {
+      var card = appData.cards.find(function(c){ return c.id === itemId; });
+      if (!card) return;
+      startX = e.clientX - rect.left - card.x;
+      startY = e.clientY - rect.top  - card.y;
+    } else {
+      var node = getNodeById(parentCardId, itemId);
+      if (!node) return;
+      startX = e.clientX - rect.left - node.x;
+      startY = e.clientY - rect.top  - node.y;
+    }
+
+    dragging = true;
+    element.classList.add("is-dragging");
+    element.setPointerCapture(e.pointerId);
   });
-  el.addEventListener("pointermove",e=>{
-    if(!active)return;e.preventDefault();
-    const r=$("s-canvas").getBoundingClientRect();
-    const nx=Math.max(0,Math.min(e.clientX-r.left-ox,r.width-200));
-    const ny=Math.max(0,Math.min(e.clientY-r.top-oy,r.height-140));
-    if(kind==="card"){const c=D.cards.find(x=>x.id===id);if(c){c.x=nx;c.y=ny;el.style.left=nx+"px";el.style.top=ny+"px";redrawLines();}}
-    else{const n=(D.nodes[cardId]||[]).find(x=>x.id===id);if(n){n.x=nx;n.y=ny;el.style.left=nx+"px";el.style.top=ny+"px";redrawLines();}}
-  });
-  el.addEventListener("pointerup",()=>{if(!active)return;active=false;el.classList.remove("drag");saveD();});
-}
 
-function redrawLines(){
-  let h="";
-  D.cards.forEach(c=>{
-    (D.nodes[c.id]||[]).forEach(n=>{
-      const info=NT[n.type];
-      h+=`<line x1="${c.x+76}" y1="${c.y+40}" x2="${n.x+59}" y2="${n.y+25}" stroke="${info.color}" stroke-width="2.5" stroke-dasharray="7 4" opacity=".65"/>
-      <circle cx="${n.x+59}" cy="${n.y+25}" r="5" fill="${info.color}" opacity=".9"/>`;
-    });
-  });
-  $("cv-svg").innerHTML=h;
-}
+  element.addEventListener("pointermove", function(e) {
+    if (!dragging) return;
+    e.preventDefault();
+    var rect = el("pg-canvas").getBoundingClientRect();
+    var nx = Math.max(0, Math.min(e.clientX - rect.left - startX, rect.width  - 200));
+    var ny = Math.max(0, Math.min(e.clientY - rect.top  - startY, rect.height - 140));
 
-/* ═══════════════════════════════════════════
-   NOTIFICATIONS
-═══════════════════════════════════════════ */
-function toggleNotif(){
-  notifOn=!notifOn;
-  toast$(notifOn?"🔔 التنبيهات مفعّلة":"🔕 التنبيهات موقوفة");
-  if(notifOn&&"Notification" in window)Notification.requestPermission();
-}
-
-/* ═══════════════════════════════════════════
-   PWA
-═══════════════════════════════════════════ */
-window.addEventListener("beforeinstallprompt",e=>{
-  e.preventDefault();deferredPrompt=e;
-  if(!localStorage.getItem("inst-dismissed"))
-    setTimeout(()=>$("inst-banner").classList.add("on"),3500);
-});
-window.addEventListener("appinstalled",()=>toast$("🎉 تم تثبيت التطبيق!"));
-
-/* ═══════════════════════════════════════════
-   BIND EVENTS
-═══════════════════════════════════════════ */
-function bindAll(){
-  // Splash → Auth
-  $("btn-start").onclick=()=>show("s-auth");
-
-  // Auth
-  $("btn-login").onclick=doLogin;
-  $("btn-signup").onclick=doSignup;
-  $("btn-guest").onclick=doGuest;
-  $("li-pass").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
-  $("su-pass2").addEventListener("keydown",e=>{if(e.key==="Enter")doSignup();});
-
-  // Home
-  $("btn-hm-add").onclick=()=>addCard();
-  $("btn-hm-open").onclick=()=>{show("s-canvas");renderCanvas();};
-  $("btn-logout").onclick=doLogout;
-
-  // Canvas toolbar
-  $("btn-main-dd").onclick=e=>{e.stopPropagation();toggleDD("dd-main");};
-  $("btn-style-dd").onclick=e=>{e.stopPropagation();toggleDD("dd-style");};
-
-  // Dropdown items
-  $("btn-dd-home").onclick=()=>{closeAllDD();show("s-home");renderHome();};
-  $("btn-dd-add").onclick=()=>{closeAllDD();addCard();};
-  $("btn-dd-notif").onclick=()=>{closeAllDD();toggleNotif();};
-  $("btn-dd-logout").onclick=()=>{closeAllDD();doLogout();};
-
-  // Task panel
-  $("btn-tp-x").onclick=closeTP;
-  $("btn-tp-save").onclick=saveDT;
-  $("btn-t-add").onclick=addTask;
-  $("t-inp").addEventListener("keydown",e=>{if(e.key==="Enter")addTask();});
-
-  // Canvas click → close panels
-  $("s-canvas").addEventListener("click",e=>{
-    const id=e.target.id;
-    if(id==="s-canvas"||id==="cv-bg"||id==="cv-svg"||e.target===document.querySelector("#cv-svg")){
-      closeAllDD();closeTP();
+    if (kind === "card") {
+      var card = appData.cards.find(function(c){ return c.id === itemId; });
+      if (card) {
+        card.x = nx; card.y = ny;
+        element.style.left = nx + "px";
+        element.style.top  = ny + "px";
+        redrawSVGLines();
+      }
+    } else {
+      var node = getNodeById(parentCardId, itemId);
+      if (node) {
+        node.x = nx; node.y = ny;
+        element.style.left = nx + "px";
+        element.style.top  = ny + "px";
+        redrawSVGLines();
+      }
     }
   });
-  document.addEventListener("click",e=>{
-    if(!e.target.closest(".dd")&&!e.target.closest(".tbtn"))closeAllDD();
-  });
 
-  // Install
-  $("btn-inst-yes").onclick=()=>{
-    $("inst-banner").classList.remove("on");
-    if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=null;}
-  };
-  $("btn-inst-no").onclick=()=>{
-    $("inst-banner").classList.remove("on");
-    localStorage.setItem("inst-dismissed","1");
-  };
+  element.addEventListener("pointerup", function() {
+    if (!dragging) return;
+    dragging = false;
+    element.classList.remove("is-dragging");
+    persistData();
+  });
 }
 
-/* ═══════════════════════════════════════════
+function redrawSVGLines() {
+  var svg = el("cv-svg");
+  var html = "";
+  for (var ci = 0; ci < appData.cards.length; ci++) {
+    var card = appData.cards[ci];
+    var cardNodes = appData.nodes[card.id] || [];
+    for (var ni = 0; ni < cardNodes.length; ni++) {
+      var nd = cardNodes[ni];
+      var def = NODE_DEFS[nd.type];
+      html += '<line x1="' + (card.x+76) + '" y1="' + (card.y+40)
+        + '" x2="' + (nd.x+59) + '" y2="' + (nd.y+25)
+        + '" stroke="' + def.color + '" stroke-width="2.5" stroke-dasharray="7 4" opacity=".65"/>'
+        + '<circle cx="' + (nd.x+59) + '" cy="' + (nd.y+25) + '" r="5" fill="' + def.color + '" opacity=".9"/>';
+    }
+  }
+  svg.innerHTML = html;
+}
+
+/* ══════════════════════════════════════════════════
+   NOTIFICATIONS
+══════════════════════════════════════════════════ */
+function toggleNotifications() {
+  notifEnabled = !notifEnabled;
+  showToast(notifEnabled ? "🔔 التنبيهات مفعّلة" : "🔕 التنبيهات موقوفة");
+  if (notifEnabled && "Notification" in window) Notification.requestPermission();
+}
+
+/* ══════════════════════════════════════════════════
+   PWA INSTALL
+══════════════════════════════════════════════════ */
+window.addEventListener("beforeinstallprompt", function(e) {
+  e.preventDefault();
+  installPrompt = e;
+  if (!localStorage.getItem("inst_dismissed")) {
+    setTimeout(function(){ el("install-bar").classList.add("show"); }, 3500);
+  }
+});
+window.addEventListener("appinstalled", function() { showToast("🎉 تم تثبيت فكرتى!"); });
+
+/* ══════════════════════════════════════════════════
    SERVICE WORKER
-═══════════════════════════════════════════ */
-if("serviceWorker" in navigator){
-  window.addEventListener("load",()=>{
-    navigator.serviceWorker.register("sw.js")
-      .then(()=>console.log("SW ✓"))
-      .catch(e=>console.warn("SW:",e));
+══════════════════════════════════════════════════ */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker.register("sw.js?" + APP_VERSION)
+      .then(function(){ console.log("SW registered"); })
+      .catch(function(e){ console.warn("SW error:", e); });
   });
 }
 
-/* ═══════════════════════════════════════════
-   BOOT  ← single entry point, runs once
-═══════════════════════════════════════════ */
-document.addEventListener("DOMContentLoaded",()=>{
-  bindAll();
-  renderSG();
+/* ══════════════════════════════════════════════════
+   INIT  ← runs once on page load
+══════════════════════════════════════════════════ */
+window.addEventListener("DOMContentLoaded", function() {
+  console.log("Fekrty " + APP_VERSION + " booting...");
 
-  // Check existing session
-  const saved=getSession();
-  if(saved){
-    session=saved;
-    D=loadUserData(saved.email);
-    $("hm-username").textContent=saved.name;
-    applyStyle();renderSG();
-    show("s-home");
-    renderHome();
+  /* ── Wire all buttons ── */
+
+  // Splash
+  el("SPLASH_BTN").addEventListener("click", function() {
+    console.log("Splash button clicked");
+    goToPage("pg-auth");
+  });
+
+  // Auth forms
+  el("BTN_LOGIN").addEventListener("click",  doLogin);
+  el("BTN_SIGNUP").addEventListener("click", doSignup);
+  el("BTN_GUEST").addEventListener("click",  doGuest);
+  el("LI_PASS").addEventListener("keydown",  function(e){ if(e.key==="Enter") doLogin(); });
+  el("SU_PASS2").addEventListener("keydown", function(e){ if(e.key==="Enter") doSignup(); });
+
+  // Home
+  el("BTN_HOME_ADD").addEventListener("click",     addCard);
+  el("BTN_HOME_OPEN").addEventListener("click",    function(){ goToPage("pg-canvas"); renderCanvas(); });
+  el("BTN_HOME_LOGOUT").addEventListener("click",  doLogout);
+
+  // Toolbar dropdowns
+  el("BTN_MAIN_DD").addEventListener("click", function(e){ e.stopPropagation(); toggleDropdown("DD_MAIN"); });
+  el("BTN_STYLE_DD").addEventListener("click",function(e){ e.stopPropagation(); toggleDropdown("DD_STYLE"); });
+
+  // Dropdown items
+  el("DD_GO_HOME").addEventListener("click",  function(){ closeAllDropdowns(); goToPage("pg-home"); renderHomeProjects(); });
+  el("DD_ADD_CARD").addEventListener("click", function(){ closeAllDropdowns(); addCard(); });
+  el("DD_NOTIF").addEventListener("click",    function(){ closeAllDropdowns(); toggleNotifications(); });
+  el("DD_LOGOUT").addEventListener("click",   function(){ closeAllDropdowns(); doLogout(); });
+
+  // Task panel
+  el("BTN_TP_CLOSE").addEventListener("click", closeTaskPanel);
+  el("BTN_TP_SAVE").addEventListener("click",  saveNodeDatetime);
+  el("BTN_TASK_ADD").addEventListener("click", addTaskToNode);
+  el("TASK_INP").addEventListener("keydown",   function(e){ if(e.key==="Enter") addTaskToNode(); });
+
+  // Canvas background click → close panels
+  el("pg-canvas").addEventListener("click", function(e) {
+    if (e.target.id === "pg-canvas" || e.target.id === "cv-bg" || e.target.id === "cv-svg") {
+      closeAllDropdowns();
+      closeTaskPanel();
+    }
+  });
+
+  // Close dropdowns on outside click
+  document.addEventListener("click", function(e) {
+    if (!e.target.closest(".dropdown") && !e.target.closest(".tb-btn")) {
+      closeAllDropdowns();
+    }
+  });
+
+  // Install bar
+  el("BTN_INST_YES").addEventListener("click", function() {
+    el("install-bar").classList.remove("show");
+    if (installPrompt) { installPrompt.prompt(); installPrompt = null; }
+  });
+  el("BTN_INST_NO").addEventListener("click", function() {
+    el("install-bar").classList.remove("show");
+    localStorage.setItem("inst_dismissed", "1");
+  });
+
+  /* ── Check saved session ── */
+  var saved = readSession();
+  console.log("Saved session:", saved);
+
+  if (saved && saved.email) {
+    currentUser = saved;
+    appData = readData(saved.email);
+    el("HOME_USERNAME").textContent = saved.name;
+    renderStyleGrid();
+    renderHomeProjects();
+    goToPage("pg-home");
+    console.log("Restored session for:", saved.name);
   } else {
-    show("s-splash");
+    renderStyleGrid();
+    goToPage("pg-splash");
+    console.log("No session, showing splash");
   }
 });
 </script>
