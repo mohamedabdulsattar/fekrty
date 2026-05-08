@@ -2,832 +2,811 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#FC5C7D">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="فكرتى">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="application-name" content="فكرتى">
-<meta name="description" content="منظّم الأفكار الذكي - خرائط ذهنية وتخطيط المهام">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" href="icons/icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
 <title>فكرتى ✨</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{width:100%;height:100%;overflow:hidden;font-family:'Tajawal',sans-serif;direction:rtl;background:#1a1a2e}
-#root{width:100vw;height:100vh;position:relative;overflow:hidden}
-
-/* ── SPLASH ── */
-#splash{position:absolute;inset:0;z-index:3000;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#FC5C7D 0%,#6A3DE8 55%,#00C9FF 100%);transition:opacity .8s ease}
-#splash.hide{opacity:0;pointer-events:none}
-.splash-logo{font-size:clamp(44px,10vw,72px);font-weight:900;color:#fff;text-shadow:0 4px 28px rgba(0,0,0,.25);margin-bottom:12px;letter-spacing:-2px}
-.splash-q{font-size:clamp(14px,3.5vw,20px);color:rgba(255,255,255,.92);margin-bottom:6px;text-align:center;padding:0 24px}
-.splash-sub{font-size:clamp(11px,2.5vw,14px);color:rgba(255,255,255,.55);margin-bottom:48px;text-align:center}
-.splash-btn{background:#fff;color:#FC5C7D;border:none;padding:14px 56px;border-radius:50px;font-family:'Tajawal',sans-serif;font-size:clamp(15px,3.5vw,19px);font-weight:700;cursor:pointer;box-shadow:0 8px 32px rgba(0,0,0,.2);transition:.2s;touch-action:manipulation}
-.splash-btn:active{transform:scale(.97)}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Tajawal',sans-serif;direction:rtl;background:#0f0f1a}
+/* ─── SCREENS ─── */
+.scr{position:fixed;inset:0;display:none;flex-direction:column;overflow:hidden}
+.scr.on{display:flex}
+/* ─── SPLASH ─── */
+#s-splash{background:linear-gradient(135deg,#FC5C7D,#6A3DE8,#00C9FF);align-items:center;justify-content:center;text-align:center}
+.sp-logo{font-size:clamp(48px,13vw,76px);font-weight:900;color:#fff;text-shadow:0 4px 28px #0003;margin-bottom:10px;letter-spacing:-2px}
+.sp-q{font-size:clamp(14px,3.5vw,19px);color:rgba(255,255,255,.9);margin-bottom:6px;padding:0 20px}
+.sp-sub{font-size:clamp(11px,2.5vw,14px);color:rgba(255,255,255,.55);margin-bottom:44px}
+.sp-btn{background:#fff;color:#FC5C7D;border:none;padding:15px 60px;border-radius:50px;font-family:'Tajawal',sans-serif;font-size:clamp(15px,4vw,19px);font-weight:700;cursor:pointer;box-shadow:0 8px 32px #0003;transition:.15s}
+.sp-btn:active{transform:scale(.97)}
 .blob{position:absolute;border-radius:50%;background:rgba(255,255,255,.07);pointer-events:none}
-
-/* ── HOME ── */
-#home{position:absolute;inset:0;z-index:2000;display:none;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);overflow-y:auto}
-#home.show{display:flex}
-.home-quote{background:rgba(255,255,255,.07);border-radius:20px;padding:20px 28px;margin-bottom:28px;text-align:center;border:1px solid rgba(255,255,255,.1);max-width:340px;width:90%}
-.home-quote .qi{font-size:28px;margin-bottom:8px}
-.home-quote .qt{font-size:clamp(14px,3.5vw,18px);color:#fff;font-weight:700;margin-bottom:4px}
-.home-quote .qs{font-size:12px;color:rgba(255,255,255,.4)}
-.home-btns{display:flex;flex-direction:column;gap:12px;width:min(280px,88%)}
-.hbtn{border:none;padding:14px 24px;border-radius:16px;font-family:'Tajawal',sans-serif;font-size:clamp(14px,3.5vw,17px);font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;touch-action:manipulation;transition:.15s}
-.hbtn:active{transform:scale(.97)}
-.hbtn-add{background:linear-gradient(135deg,#FC5C7D,#F093FB);color:#fff;box-shadow:0 6px 24px rgba(252,92,125,.4)}
-.hbtn-open{background:linear-gradient(135deg,#667EEA,#764BA2);color:#fff;box-shadow:0 6px 24px rgba(102,126,234,.4)}
-.home-list{margin-top:20px;background:rgba(255,255,255,.05);border-radius:16px;padding:14px 18px;width:min(280px,88%);max-height:200px;overflow-y:auto;border:1px solid rgba(255,255,255,.08)}
-.home-list-title{font-size:11px;color:rgba(255,255,255,.3);margin-bottom:8px}
-.home-list-row{display:flex;align-items:center;gap:8px;padding:8px 0;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.8);font-size:13px}
-.home-list-dot{width:9px;height:9px;border-radius:3px;flex-shrink:0}
-
-/* ── CANVAS ── */
-#canvas{position:absolute;inset:0;z-index:1000;display:none;touch-action:none;overflow:hidden}
-#canvas.show{display:block}
-#canvas-bg{position:absolute;inset:0;transition:background .3s}
-#canvas-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
-
-/* ── TOOLBAR ── */
-#toolbar{position:absolute;top:12px;right:12px;display:flex;gap:8px;z-index:500;flex-wrap:wrap}
-.tbtn{border:none;padding:9px 16px;border-radius:14px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:900;cursor:pointer;color:#fff;box-shadow:0 4px 18px rgba(0,0,0,.2);touch-action:manipulation;transition:.15s;white-space:nowrap}
-.tbtn:active{transform:scale(.95)}
+/* ─── AUTH ─── */
+#s-auth{background:linear-gradient(160deg,#1a1a2e,#16213e);align-items:center;justify-content:center;padding:24px}
+.auth-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:28px 24px;width:min(360px,100%);backdrop-filter:blur(10px)}
+.auth-logo{text-align:center;font-size:32px;font-weight:900;color:#fff;margin-bottom:4px}
+.auth-sub{text-align:center;font-size:12px;color:rgba(255,255,255,.4);margin-bottom:24px}
+.auth-tabs{display:flex;background:rgba(255,255,255,.06);border-radius:12px;padding:3px;margin-bottom:20px}
+.auth-tab{flex:1;padding:9px;border-radius:10px;border:none;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;background:transparent;color:rgba(255,255,255,.45);transition:.2s}
+.auth-tab.on{background:#fff;color:#1a1a2e;box-shadow:0 3px 12px #0002}
+.auth-field{margin-bottom:14px}
+.auth-label{font-size:12px;color:rgba(255,255,255,.55);margin-bottom:5px}
+.auth-inp{width:100%;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.12);border-radius:12px;padding:11px 14px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;transition:.2s}
+.auth-inp:focus{border-color:#FC5C7D;background:rgba(255,255,255,.12)}
+.auth-inp::placeholder{color:rgba(255,255,255,.3)}
+.auth-btn{width:100%;border:none;border-radius:14px;padding:13px;font-family:'Tajawal',sans-serif;font-size:16px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#FC5C7D,#6A3DE8);color:#fff;box-shadow:0 6px 24px rgba(252,92,125,.35);margin-top:4px;transition:.15s}
+.auth-btn:active{transform:scale(.98)}
+.auth-err{font-size:12px;color:#FF6B6B;text-align:center;margin-top:10px;min-height:18px}
+.auth-guest{text-align:center;font-size:12px;color:rgba(255,255,255,.35);margin-top:14px;cursor:pointer;text-decoration:underline}
+/* ─── HOME ─── */
+#s-home{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);align-items:center;justify-content:center;overflow-y:auto;padding:24px 16px}
+.hm-header{display:flex;align-items:center;justify-content:space-between;width:min(340px,100%);margin-bottom:20px}
+.hm-user{font-size:13px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:6px}
+.hm-user b{color:rgba(255,255,255,.85)}
+.hm-logout{background:rgba(255,255,255,.08);border:none;border-radius:8px;padding:5px 10px;font-family:'Tajawal',sans-serif;font-size:11px;color:rgba(255,255,255,.5);cursor:pointer}
+.hm-quote{background:rgba(255,255,255,.07);border-radius:20px;padding:20px 28px;margin-bottom:22px;text-align:center;border:1px solid rgba(255,255,255,.1);width:min(340px,100%)}
+.hm-q-ico{font-size:26px;margin-bottom:6px}
+.hm-q-txt{font-size:clamp(14px,3.5vw,17px);color:#fff;font-weight:700;margin-bottom:3px}
+.hm-q-sub{font-size:11px;color:rgba(255,255,255,.35)}
+.hm-btns{display:flex;flex-direction:column;gap:10px;width:min(300px,100%)}
+.hm-btn{border:none;padding:14px 20px;border-radius:16px;font-family:'Tajawal',sans-serif;font-size:clamp(14px,3.5vw,16px);font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:.15s}
+.hm-btn:active{transform:scale(.98)}
+.hm-add{background:linear-gradient(135deg,#FC5C7D,#F093FB);color:#fff;box-shadow:0 6px 20px rgba(252,92,125,.35)}
+.hm-open{background:linear-gradient(135deg,#667EEA,#764BA2);color:#fff;box-shadow:0 6px 20px rgba(102,126,234,.35)}
+.hm-list{margin-top:16px;background:rgba(255,255,255,.05);border-radius:16px;padding:14px 18px;width:min(300px,100%);max-height:200px;overflow-y:auto;border:1px solid rgba(255,255,255,.08)}
+.hm-list-hd{font-size:11px;color:rgba(255,255,255,.3);margin-bottom:8px}
+.hm-row{display:flex;align-items:center;gap:8px;padding:8px 0;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.78);font-size:13px}
+.hm-dot{width:9px;height:9px;border-radius:3px;flex-shrink:0}
+/* ─── CANVAS ─── */
+#s-canvas{position:fixed;inset:0;overflow:hidden;touch-action:none}
+#cv-bg{position:absolute;inset:0;z-index:0}
+#cv-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+/* ─── TOOLBAR ─── */
+#toolbar{position:absolute;top:12px;right:12px;z-index:200;display:flex;gap:8px;flex-wrap:wrap}
+.tbtn{border:none;padding:9px 15px;border-radius:13px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:900;cursor:pointer;color:#fff;box-shadow:0 4px 16px #0002;white-space:nowrap;transition:.15s}
+.tbtn:active{transform:scale(.96)}
 .tbtn-main{background:linear-gradient(135deg,#FC5C7D,#6A3DE8)}
 .tbtn-style{background:linear-gradient(135deg,#4FACFE,#00F2FE)}
-
-/* ── DROPDOWN ── */
-.dropdown{position:absolute;top:44px;right:0;background:#fff;border-radius:18px;box-shadow:0 12px 50px rgba(0,0,0,.2);padding:12px;min-width:230px;z-index:600;display:none;max-height:80vh;overflow-y:auto}
-.dropdown.show{display:block}
-.dd-title{font-size:11px;color:#aaa;padding:2px 8px 8px;border-bottom:1px solid #f0f0f0;margin-bottom:6px}
-.dd-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:500;color:#333;transition:.15s;border:none;background:transparent;font-family:'Tajawal',sans-serif;width:100%;text-align:right;touch-action:manipulation}
-.dd-item:active,.dd-item:hover{background:#f5f5f5}
-.dd-item .di{font-size:16px}
-.dd-sep{margin:6px 0;border-top:1px solid #f0f0f0}
-.dd-sub{font-size:11px;color:#aaa;padding:4px 10px 6px}
-.dd-proj{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;cursor:pointer;font-size:13px;color:#333;transition:.15s}
-.dd-proj:active,.dd-proj:hover{background:#f5f5f5}
-.dd-proj-dot{width:9px;height:9px;border-radius:3px;flex-shrink:0}
-.dd-del{background:none;border:none;cursor:pointer;font-size:14px;color:#ccc;padding:0;margin-right:auto;touch-action:manipulation}
-
-/* ── STYLE GRID ── */
-.style-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:4px 0}
-.style-opt{border:2.5px solid #e5e5e5;border-radius:12px;padding:10px 6px;cursor:pointer;text-align:center;font-size:11px;font-weight:700;color:#555;transition:.18s;touch-action:manipulation}
-.style-opt:active{transform:scale(.95)}
-.style-opt.active{border-color:#6A3DE8;transform:scale(1.06)}
-
-/* ── CARDS ── */
-.idea-card{position:absolute;min-width:155px;max-width:195px;border-radius:20px;padding:12px 14px;cursor:grab;box-shadow:0 8px 28px rgba(0,0,0,.18);z-index:10;touch-action:none;user-select:none;transition:box-shadow .2s}
-.idea-card.dragging{cursor:grabbing;box-shadow:0 22px 60px rgba(0,0,0,.3);z-index:60}
-.card-row{display:flex;align-items:center;gap:6px;margin-bottom:8px}
-.card-emoji{font-size:20px;flex-shrink:0}
-.card-input{background:transparent;border:none;outline:none;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;flex:1;min-width:0;text-shadow:0 1px 4px rgba(0,0,0,.2)}
-.card-tags{display:flex;flex-wrap:wrap;gap:4px}
-.ctag{background:rgba(255,255,255,.22);border:none;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:700;color:#fff;cursor:pointer;font-family:'Tajawal',sans-serif;touch-action:manipulation;transition:.15s}
+/* ─── DROPDOWN ─── */
+.dd{position:absolute;top:46px;right:0;background:#fff;border-radius:18px;box-shadow:0 12px 50px #00000025;padding:10px;min-width:220px;z-index:600;display:none;max-height:72vh;overflow-y:auto}
+.dd.on{display:block}
+.dd-ttl{font-size:11px;color:#aaa;padding:2px 8px 8px;border-bottom:1px solid #f5f5f5;margin-bottom:4px}
+.dd-btn{display:flex;align-items:center;gap:9px;padding:10px 10px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:500;color:#333;border:none;background:transparent;font-family:'Tajawal',sans-serif;width:100%;text-align:right}
+.dd-btn:hover,.dd-btn:active{background:#f5f5f5}
+.dd-sep{margin:5px 0;border-top:1px solid #f5f5f5}
+.dd-sub{font-size:11px;color:#aaa;padding:4px 10px 5px}
+.dd-proj{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:10px;cursor:pointer;font-size:13px;color:#333}
+.dd-proj:hover{background:#f5f5f5}
+.dd-pdel{background:none;border:none;cursor:pointer;font-size:13px;color:#ccc;padding:0;margin-right:auto}
+.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:2px 0}
+.sg-opt{border:2.5px solid #e8e8e8;border-radius:11px;padding:9px 5px;cursor:pointer;text-align:center;font-size:11px;font-weight:700;transition:.15s}
+.sg-opt.sel{border-color:#6A3DE8;transform:scale(1.05)}
+/* ─── CARDS ─── */
+.card{position:absolute;min-width:152px;max-width:192px;border-radius:20px;padding:12px 14px;cursor:grab;box-shadow:0 8px 28px #00000018;z-index:10;touch-action:none;user-select:none;transition:box-shadow .2s}
+.card.drag{cursor:grabbing;box-shadow:0 22px 60px #00000030;z-index:60;transform:rotate(1.5deg) scale(1.04)}
+.c-row{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.c-emoji{font-size:20px;flex-shrink:0}
+.c-inp{background:transparent;border:none;outline:none;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;flex:1;min-width:0;text-shadow:0 1px 4px #0002}
+.c-tags{display:flex;flex-wrap:wrap;gap:4px}
+.ctag{background:rgba(255,255,255,.22);border:none;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:700;color:#fff;cursor:pointer;font-family:'Tajawal',sans-serif;transition:.1s}
 .ctag:active{background:rgba(255,255,255,.4)}
-.ctag-del{background:rgba(255,80,80,.32)}
-.card-nodes-mini{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
-.cnm{background:rgba(255,255,255,.28);border-radius:20px;padding:2px 8px;font-size:10px;color:#fff;font-weight:700}
-
-/* ── NODES ── */
-.idea-node{position:absolute;width:122px;border-radius:16px;padding:10px 12px;cursor:grab;box-shadow:0 6px 22px rgba(0,0,0,.13);z-index:15;touch-action:none;user-select:none;transition:box-shadow .2s}
-.idea-node.dragging{cursor:grabbing;z-index:55;box-shadow:0 18px 50px rgba(0,0,0,.22)}
-.idea-node.active-node{z-index:20}
-.node-label{font-size:13px;font-weight:700}
-.node-count{font-size:10px;color:#888;margin-top:2px}
-.node-dt{font-size:9px;margin-top:2px}
-
-/* ── TASK PANEL ── */
-#task-panel{position:absolute;width:min(252px,92vw);background:#fff;border-radius:20px;box-shadow:0 18px 60px rgba(0,0,0,.22);padding:14px;z-index:400;display:none;max-height:80vh;overflow-y:auto}
-#task-panel.show{display:block}
-.tp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.tp-label{font-size:13px;font-weight:900}
-.tp-card{font-size:11px;color:#aaa}
-.tp-close{background:#f0f0f0;border:none;border-radius:8px;width:28px;height:28px;cursor:pointer;font-size:15px;font-family:'Tajawal',sans-serif;flex-shrink:0;display:flex;align-items:center;justify-content:center;touch-action:manipulation}
+.ctag-del{background:rgba(255,70,70,.32)}
+.c-mini{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.c-mbadge{background:rgba(255,255,255,.28);border-radius:20px;padding:2px 8px;font-size:10px;color:#fff;font-weight:700}
+/* ─── NODES ─── */
+.node{position:absolute;width:118px;border-radius:15px;padding:10px 11px;cursor:grab;box-shadow:0 5px 20px #00000013;z-index:15;touch-action:none;user-select:none;transition:box-shadow .2s}
+.node.drag{cursor:grabbing;z-index:55;box-shadow:0 16px 48px #00000020}
+.node.act{z-index:20}
+.n-lbl{font-size:13px;font-weight:700}
+.n-cnt{font-size:10px;color:#888;margin-top:2px}
+.n-dt{font-size:9px;margin-top:2px}
+/* ─── TASK PANEL ─── */
+#task-panel{position:absolute;width:min(250px,94vw);background:#fff;border-radius:20px;box-shadow:0 18px 60px #00000022;padding:14px;z-index:400;display:none;max-height:82vh;overflow-y:auto}
+#task-panel.on{display:block}
+.tp-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.tp-lbl{font-size:13px;font-weight:900}
+.tp-cn{font-size:11px;color:#aaa;margin-top:1px}
+.tp-x{background:#f0f0f0;border:none;border-radius:8px;width:27px;height:27px;cursor:pointer;font-size:15px;font-family:'Tajawal',sans-serif}
 .tp-sect{font-size:11px;color:#aaa;margin-bottom:5px}
 .tp-dt{width:100%;border:1.5px solid #e0e0e0;border-radius:10px;padding:7px 10px;font-family:'Tajawal',sans-serif;font-size:12px;outline:none;margin-bottom:6px}
-.tp-save{width:100%;border:none;border-radius:10px;padding:8px 0;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:#fff;touch-action:manipulation}
-.tp-divider{border-top:1px solid #f0f0f0;margin:10px 0}
-.task-list{max-height:140px;overflow-y:auto;margin-bottom:8px}
-.task-row{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid #f8f8f8}
-.task-check{width:19px;height:19px;border-radius:6px;border-width:2px;border-style:solid;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;touch-action:manipulation}
-.task-text{flex:1;font-size:12px}
-.task-del{background:none;border:none;cursor:pointer;font-size:13px;color:#ddd;padding:0;touch-action:manipulation}
-.task-add-row{display:flex;gap:6px}
-.task-inp{flex:1;border:1.5px solid #e0e0e0;border-radius:10px;padding:8px 10px;font-family:'Tajawal',sans-serif;font-size:13px;outline:none}
-.task-add-btn{border:none;border-radius:10px;padding:0 14px;cursor:pointer;font-size:20px;font-weight:900;color:#fff;font-family:'Tajawal',sans-serif;touch-action:manipulation}
-
-/* ── EMPTY STATE ── */
-#empty-hint{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;z-index:2}
-#empty-hint .eh-ico{font-size:52px;opacity:.2;margin-bottom:12px}
-#empty-hint .eh-txt{font-size:15px;font-weight:600;color:#bbb;text-align:center}
-
-/* ── TOAST ── */
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:10px 26px;border-radius:50px;font-size:13px;z-index:9999;white-space:nowrap;box-shadow:0 6px 24px rgba(0,0,0,.25);opacity:0;transition:opacity .35s;pointer-events:none}
-#toast.show{opacity:1}
-
-/* ── INSTALL BANNER ── */
-#install-banner{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#FC5C7D,#6A3DE8);color:#fff;padding:14px 20px;display:none;align-items:center;gap:12px;z-index:8000;box-shadow:0 -4px 24px rgba(0,0,0,.2)}
-#install-banner.show{display:flex}
-#install-banner .ib-text{flex:1;font-size:14px;font-weight:700}
-#install-banner .ib-text small{display:block;font-size:11px;font-weight:400;opacity:.8}
-#install-banner button{border:none;border-radius:12px;padding:9px 18px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation}
-#install-banner .ib-yes{background:#fff;color:#FC5C7D}
-#install-banner .ib-no{background:rgba(255,255,255,.2);color:#fff}
-
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:#ddd;border-radius:4px}
-
-/* ── RESPONSIVE ── */
-@media(max-width:480px){
-  .dropdown{min-width:200px;right:-8px}
-  #task-panel{width:calc(100vw - 24px)}
-  .idea-card{min-width:140px;max-width:175px}
-}
+.tp-save{width:100%;border:none;border-radius:10px;padding:8px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:#fff}
+.tp-div{border-top:1px solid #f2f2f2;margin:10px 0}
+.t-list{max-height:150px;overflow-y:auto;margin-bottom:8px}
+.t-row{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid #f8f8f8}
+.t-chk{width:19px;height:19px;border-radius:6px;border-width:2px;border-style:solid;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff}
+.t-txt{flex:1;font-size:12px;color:#333}
+.t-done{color:#ccc;text-decoration:line-through}
+.t-del{background:none;border:none;cursor:pointer;font-size:12px;color:#ddd;padding:0}
+.t-add{display:flex;gap:6px}
+.t-inp{flex:1;border:1.5px solid #e0e0e0;border-radius:10px;padding:7px 10px;font-family:'Tajawal',sans-serif;font-size:13px;outline:none}
+.t-addbtn{border:none;border-radius:10px;padding:0 13px;cursor:pointer;font-size:20px;font-weight:900;color:#fff;font-family:'Tajawal',sans-serif}
+/* ─── EMPTY HINT ─── */
+#empty-hint{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;z-index:2}
+#empty-hint.on{display:flex}
+.eh-i{font-size:50px;opacity:.2;margin-bottom:10px}
+.eh-t{font-size:15px;font-weight:600;color:#bbb;text-align:center;line-height:1.6}
+/* ─── TOAST ─── */
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:10px 26px;border-radius:50px;font-size:13px;z-index:9999;white-space:nowrap;box-shadow:0 6px 24px #0003;opacity:0;transition:opacity .3s;pointer-events:none}
+#toast.on{opacity:1}
+/* ─── INSTALL BANNER ─── */
+#inst-banner{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#FC5C7D,#6A3DE8);color:#fff;padding:13px 18px;display:none;align-items:center;gap:10px;z-index:8000;box-shadow:0 -4px 20px #0002}
+#inst-banner.on{display:flex}
+.ib-txt{flex:1;font-size:13px;font-weight:700}
+.ib-txt small{display:block;font-size:11px;opacity:.75;font-weight:400}
+.ib-yes{background:#fff;color:#FC5C7D;border:none;border-radius:10px;padding:8px 16px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+.ib-no{background:rgba(255,255,255,.18);color:#fff;border:none;border-radius:10px;padding:8px 14px;font-family:'Tajawal',sans-serif;font-size:12px;cursor:pointer}
+@media(max-width:400px){.card{min-width:138px;max-width:170px}.dd{min-width:195px}}
 </style>
 </head>
 <body>
-<div id="root">
 
-<!-- SPLASH -->
-<div id="splash">
-  <div class="blob" style="width:120px;height:120px;top:5%;left:-3%"></div>
-  <div class="blob" style="width:180px;height:180px;top:18%;left:68%"></div>
-  <div class="blob" style="width:90px;height:90px;top:60%;left:5%"></div>
-  <div class="blob" style="width:150px;height:150px;top:72%;left:72%"></div>
-  <div class="splash-logo">✨ فكرتى</div>
-  <div class="splash-q" id="splash-q">💡 كل فكرة عظيمة بدأت بخطوة صغيرة</div>
-  <div class="splash-sub">نظّم أفكارك · حقّق أهدافك · فكّك المهام</div>
-  <button class="splash-btn" onclick="goHome()">ابدأ التفكير ! 🚀</button>
+<!-- ══ SPLASH ══ -->
+<div id="s-splash" class="scr on">
+  <div class="blob" style="width:130px;height:130px;top:3%;left:-4%"></div>
+  <div class="blob" style="width:200px;height:200px;top:14%;left:63%"></div>
+  <div class="blob" style="width:100px;height:100px;top:65%;left:3%"></div>
+  <div class="blob" style="width:160px;height:160px;top:68%;left:68%"></div>
+  <div class="sp-logo">✨ فكرتى</div>
+  <div class="sp-q" id="sp-q">💡 كل فكرة عظيمة بدأت بخطوة صغيرة</div>
+  <div class="sp-sub">نظّم أفكارك · حقّق أهدافك · فكّك المهام</div>
+  <button class="sp-btn" id="btn-start">ابدأ التفكير ! 🚀</button>
 </div>
 
-<!-- HOME -->
-<div id="home">
-  <div class="blob" style="width:120px;height:120px;top:4%;left:-3%;background:rgba(255,255,255,.04)"></div>
-  <div class="blob" style="width:200px;height:200px;top:55%;left:65%;background:rgba(255,255,255,.03)"></div>
-  <div class="home-quote">
-    <div class="qi">✨</div>
-    <div class="qt" id="home-q">💡 كل فكرة عظيمة بدأت بخطوة صغيرة</div>
-    <div class="qs">فكرتى · منظّم الأفكار الذكي</div>
-  </div>
-  <div class="home-btns">
-    <button class="hbtn hbtn-add" onclick="addCard();goCanvas()">➕ إضافة مشروع / فكرة جديدة</button>
-    <button class="hbtn hbtn-open" onclick="goCanvas()">🗺️ فتح لوحة الأفكار</button>
-  </div>
-  <div class="home-list" id="home-list" style="display:none">
-    <div class="home-list-title" id="home-list-title"></div>
-    <div id="home-list-items"></div>
+<!-- ══ AUTH ══ -->
+<div id="s-auth" class="scr">
+  <div class="auth-box">
+    <div class="auth-logo">✨ فكرتى</div>
+    <div class="auth-sub">منظّم الأفكار الذكي</div>
+    <div class="auth-tabs">
+      <button class="auth-tab on" id="tab-login"  onclick="switchAuth('login')">تسجيل الدخول</button>
+      <button class="auth-tab"   id="tab-signup" onclick="switchAuth('signup')">إنشاء حساب</button>
+    </div>
+    <!-- LOGIN -->
+    <div id="form-login">
+      <div class="auth-field">
+        <div class="auth-label">البريد الإلكتروني</div>
+        <input class="auth-inp" id="li-email" type="email" placeholder="example@email.com" autocomplete="email">
+      </div>
+      <div class="auth-field">
+        <div class="auth-label">كلمة المرور</div>
+        <input class="auth-inp" id="li-pass"  type="password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <button class="auth-btn" id="btn-login">تسجيل الدخول 🚀</button>
+    </div>
+    <!-- SIGNUP -->
+    <div id="form-signup" style="display:none">
+      <div class="auth-field">
+        <div class="auth-label">الاسم</div>
+        <input class="auth-inp" id="su-name" type="text" placeholder="اسمك الكريم">
+      </div>
+      <div class="auth-field">
+        <div class="auth-label">البريد الإلكتروني</div>
+        <input class="auth-inp" id="su-email" type="email" placeholder="example@email.com" autocomplete="email">
+      </div>
+      <div class="auth-field">
+        <div class="auth-label">كلمة المرور (6 أحرف على الأقل)</div>
+        <input class="auth-inp" id="su-pass"  type="password" placeholder="••••••••" autocomplete="new-password">
+      </div>
+      <div class="auth-field">
+        <div class="auth-label">تأكيد كلمة المرور</div>
+        <input class="auth-inp" id="su-pass2" type="password" placeholder="••••••••" autocomplete="new-password">
+      </div>
+      <button class="auth-btn" id="btn-signup">إنشاء الحساب ✨</button>
+    </div>
+    <div class="auth-err" id="auth-err"></div>
+    <div class="auth-guest" id="btn-guest">الدخول كزائر بدون حساب</div>
   </div>
 </div>
 
-<!-- CANVAS -->
-<div id="canvas">
-  <div id="canvas-bg"></div>
-  <svg id="canvas-svg"></svg>
-  <div id="empty-hint">
-    <div class="eh-ico">💡</div>
-    <div class="eh-txt">اضغط ✨ فكرتى<br>لإضافة فكرة جديدة</div>
+<!-- ══ HOME ══ -->
+<div id="s-home" class="scr">
+  <div class="hm-header">
+    <div class="hm-user">مرحباً <b id="hm-username">...</b> 👋</div>
+    <button class="hm-logout" id="btn-logout">خروج</button>
   </div>
+  <div class="hm-quote">
+    <div class="hm-q-ico">✨</div>
+    <div class="hm-q-txt" id="hm-q">💡 كل فكرة عظيمة بدأت بخطوة صغيرة</div>
+    <div class="hm-q-sub">فكرتى · منظّم الأفكار الذكي</div>
+  </div>
+  <div class="hm-btns">
+    <button class="hm-btn hm-add" id="btn-hm-add">➕ إضافة مشروع / فكرة جديدة</button>
+    <button class="hm-btn hm-open" id="btn-hm-open">🗺️ فتح لوحة الأفكار</button>
+  </div>
+  <div class="hm-list" id="hm-list" style="display:none">
+    <div class="hm-list-hd" id="hm-list-hd"></div>
+    <div id="hm-list-items"></div>
+  </div>
+</div>
 
-  <!-- Toolbar -->
+<!-- ══ CANVAS ══ -->
+<div id="s-canvas" class="scr">
+  <div id="cv-bg"></div>
+  <svg id="cv-svg"></svg>
+  <div id="empty-hint" class="on">
+    <div class="eh-i">💡</div>
+    <div class="eh-t">اضغط ✨ فكرتى<br>لإضافة فكرة جديدة</div>
+  </div>
   <div id="toolbar">
     <div style="position:relative">
-      <button class="tbtn tbtn-main" onclick="toggleDD('main-dd')">✨ فكرتى</button>
-      <div class="dropdown" id="main-dd">
-        <div class="dd-title">القائمة الرئيسية</div>
-        <button class="dd-item" onclick="goHome();closeDD()"><span class="di">🏠</span>الصفحة الرئيسية</button>
-        <button class="dd-item" onclick="addCard();closeDD()"><span class="di">➕</span>إضافة فكرة جديدة</button>
-        <button class="dd-item" onclick="toggleNotif();closeDD()"><span class="di">🔔</span>التنبيهات</button>
+      <button class="tbtn tbtn-main" id="btn-main-dd">✨ فكرتى</button>
+      <div class="dd" id="dd-main">
+        <div class="dd-ttl">القائمة الرئيسية</div>
+        <button class="dd-btn" id="btn-dd-home"><span>🏠</span>الصفحة الرئيسية</button>
+        <button class="dd-btn" id="btn-dd-add"><span>➕</span>إضافة فكرة</button>
+        <button class="dd-btn" id="btn-dd-notif"><span>🔔</span>التنبيهات</button>
+        <button class="dd-btn" id="btn-dd-logout" style="color:#FF6B6B"><span>🚪</span>تسجيل الخروج</button>
         <div class="dd-sep"></div>
-        <div class="dd-sub" id="proj-header">المشروعات</div>
-        <div id="proj-list"></div>
+        <div class="dd-sub" id="dd-proj-hd">المشروعات</div>
+        <div id="dd-proj-list"></div>
       </div>
     </div>
     <div style="position:relative">
-      <button class="tbtn tbtn-style" onclick="toggleDD('style-dd')">🎨 استايل</button>
-      <div class="dropdown" id="style-dd">
-        <div class="dd-title" style="text-align:center">🎨 اختر استايل الصفحة</div>
-        <div class="style-grid" id="style-grid"></div>
+      <button class="tbtn tbtn-style" id="btn-style-dd">🎨 استايل</button>
+      <div class="dd" id="dd-style">
+        <div class="dd-ttl" style="text-align:center">🎨 اختر استايل الصفحة</div>
+        <div class="sg" id="sg"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Task Panel -->
+<!-- ══ TASK PANEL ══ -->
 <div id="task-panel">
-  <div class="tp-head">
-    <div><div class="tp-label" id="tp-label"></div><div class="tp-card" id="tp-card"></div></div>
-    <button class="tp-close" onclick="closeTaskPanel()">✕</button>
+  <div class="tp-hd">
+    <div><div class="tp-lbl" id="tp-lbl"></div><div class="tp-cn" id="tp-cn"></div></div>
+    <button class="tp-x" id="btn-tp-x">✕</button>
   </div>
   <div class="tp-sect">📅 وقت وتاريخ</div>
   <input type="datetime-local" class="tp-dt" id="tp-dt">
-  <button class="tp-save" id="tp-save-btn" onclick="saveDT()">💾 حفظ الموعد</button>
-  <div class="tp-divider"></div>
+  <button class="tp-save" id="btn-tp-save">💾 حفظ الموعد</button>
+  <div class="tp-div"></div>
   <div class="tp-sect">📝 المهام</div>
-  <div class="task-list" id="task-list"></div>
-  <div class="task-add-row">
-    <input class="task-inp" id="task-inp" placeholder="أضف مهمة..." onkeydown="if(event.key==='Enter')addTask()">
-    <button class="task-add-btn" id="task-add-btn" onclick="addTask()">+</button>
+  <div class="t-list" id="t-list"></div>
+  <div class="t-add">
+    <input class="t-inp" id="t-inp" placeholder="أضف مهمة...">
+    <button class="t-addbtn" id="btn-t-add">+</button>
   </div>
 </div>
 
-<!-- Toast -->
 <div id="toast"></div>
-
-<!-- Install Banner -->
-<div id="install-banner">
-  <div class="ib-text">
-    ثبّت فكرتى على جهازك
-    <small>يعمل بدون إنترنت · سريع · خفيف</small>
-  </div>
-  <button class="ib-yes" onclick="installPWA()">تثبيت</button>
-  <button class="ib-no" onclick="dismissInstall()">لاحقاً</button>
+<div id="inst-banner">
+  <div class="ib-txt">ثبّت فكرتى<small>يعمل بدون إنترنت</small></div>
+  <button class="ib-yes" id="btn-inst-yes">تثبيت</button>
+  <button class="ib-no"  id="btn-inst-no">لاحقاً</button>
 </div>
-
-</div><!-- #root -->
 
 <script>
-/* ═══════════════════════════════════════════════
-   DATA & STORAGE
-═══════════════════════════════════════════════ */
-const LS = "fekrty_pwa_v1";
-let state = { cards:[], nodes:{}, styleId:"paper" };
-
-function loadState(){
-  try{const d=localStorage.getItem(LS);if(d)state=JSON.parse(d);}catch(e){}
-}
-function saveState(){
-  try{localStorage.setItem(LS,JSON.stringify(state));}catch(e){}
-}
-
-/* ═══════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    CONSTANTS
-═══════════════════════════════════════════════ */
-const COLORS=[
-  ["#FF6B6B","#FF8E53"],["#A855F7","#EC4899"],["#06B6D4","#3B82F6"],
-  ["#10B981","#059669"],["#F59E0B","#F97316"],["#EF4444","#F43F5E"],
-  ["#8B5CF6","#6366F1"],["#14B8A6","#06B6D4"],["#FB923C","#FBBF24"],
-  ["#E879F9","#A855F7"],["#22D3EE","#6EE7B7"],["#FCD34D","#FB923C"],
-];
+═══════════════════════════════════════════ */
+const COLORS=[["#FF6B6B","#FF8E53"],["#A855F7","#EC4899"],["#06B6D4","#3B82F6"],["#10B981","#059669"],["#F59E0B","#F97316"],["#EF4444","#F43F5E"],["#8B5CF6","#6366F1"],["#14B8A6","#06B6D4"],["#FB923C","#FBBF24"],["#E879F9","#A855F7"],["#22D3EE","#6EE7B7"],["#FCD34D","#FB923C"]];
 const EMOJIS=["💡","🚀","⭐","🎯","🔮","🌟","💎","🎨","🔥","🌈","✨","🦋"];
-const QUOTES=[
-  "💡 كل فكرة عظيمة بدأت بخطوة صغيرة",
-  "🚀 ابدأ صغيراً وفكّر كبيراً",
-  "🌟 الإبداع لا حدود له",
-  "🎯 ركّز، نظّم، أنجز!",
-  "✨ أفكارك هي بذور النجاح",
-  "🔥 اليوم هو أفضل وقت للبدء",
-  "💎 العقل المنظّم يصنع المعجزات",
-];
-const PAGE_STYLES=[
-  {id:"paper",    label:"📄 ورق أصفر", bg:"#fdf6e3", line:"#e8d5a3", dark:false},
-  {id:"white",    label:"📃 أبيض نقي", bg:"#ffffff", line:"#dde3ff", dark:false},
-  {id:"mint",     label:"🌿 نعناعي",   bg:"#f0fff4", line:"#a8e6cf", dark:false},
-  {id:"lavender", label:"💜 لافندر",   bg:"#f5f0ff", line:"#c9b1ff", dark:false},
-  {id:"sunset",   label:"🌅 غروب",     bg:"#fff8f0", line:"#ffcc99", dark:false},
-  {id:"dark",     label:"🌙 ليلي",     bg:"#0f0f1a", line:"#ffffff12",dark:true},
-];
-const NODE_TYPES={
-  urgent:   {label:"🔥 عاجل",    color:"#FF6B6B",bg:"#fff0f0"},
-  noturgent:{label:"✅ غير عاجل",color:"#10B981",bg:"#f0fff8"},
-  do:       {label:"⚡ افعل",    color:"#3B82F6",bg:"#f0f4ff"},
-  delegate: {label:"👥 تفويض",  color:"#A855F7",bg:"#f8f0ff"},
-  postpone: {label:"⏳ تأجيل",  color:"#F59E0B",bg:"#fffbf0"},
-};
+const QUOTES=["💡 كل فكرة عظيمة بدأت بخطوة صغيرة","🚀 ابدأ صغيراً وفكّر كبيراً","🌟 الإبداع لا حدود له","🎯 ركّز، نظّم، أنجز!","✨ أفكارك هي بذور النجاح","🔥 اليوم هو أفضل وقت للبدء","💎 العقل المنظّم يصنع المعجزات"];
+const PAGE_STYLES=[{id:"paper",label:"📄 ورق أصفر",bg:"#fdf6e3",line:"#e8d5a3",dark:false},{id:"white",label:"📃 أبيض نقي",bg:"#ffffff",line:"#dde3ff",dark:false},{id:"mint",label:"🌿 نعناعي",bg:"#f0fff4",line:"#a8e6cf",dark:false},{id:"lavender",label:"💜 لافندر",bg:"#f5f0ff",line:"#c9b1ff",dark:false},{id:"sunset",label:"🌅 غروب",bg:"#fff8f0",line:"#ffcc99",dark:false},{id:"dark",label:"🌙 ليلي",bg:"#0f0f1a",line:"#ffffff10",dark:true}];
+const NT={urgent:{label:"🔥 عاجل",color:"#FF6B6B",bg:"#fff0f0"},noturgent:{label:"✅ غير عاجل",color:"#10B981",bg:"#f0fff8"},do:{label:"⚡ افعل",color:"#3B82F6",bg:"#f0f4ff"},delegate:{label:"👥 تفويض",color:"#A855F7",bg:"#f8f0ff"},postpone:{label:"⏳ تأجيل",color:"#F59E0B",bg:"#fffbf0"}};
 
-let quoteIdx=0, notifEnabled=false;
-let deferredPrompt=null;
-let activeNode=null; // {cardId,nodeId}
+/* ═══════════════════════════════════════════
+   AUTH  — per-user localStorage
+   Users stored at: fekrty_users   → { email: {name,passHash} }
+   Session stored at: fekrty_session → { email, name }
+   User data stored at: fekrty_data_{email} → { cards, nodes, styleId }
+═══════════════════════════════════════════ */
+const USERS_KEY    = "fekrty_users";
+const SESSION_KEY  = "fekrty_session";
+const dataKey = e => "fekrty_data_" + e.toLowerCase().trim();
 
-/* ═══════════════════════════════════════════════
-   UID
-═══════════════════════════════════════════════ */
+function hashPass(p){
+  // simple deterministic hash (no crypto needed for local storage auth)
+  let h=0;
+  for(let i=0;i<p.length;i++){h=((h<<5)-h)+p.charCodeAt(i);h|=0;}
+  return h.toString(36);
+}
+function getUsers(){try{return JSON.parse(localStorage.getItem(USERS_KEY)||"{}");}catch(e){return{};}}
+function saveUsers(u){localStorage.setItem(USERS_KEY,JSON.stringify(u));}
+function getSession(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||"null");}catch(e){return null;}}
+function setSession(s){localStorage.setItem(SESSION_KEY,JSON.stringify(s));}
+function clearSession(){localStorage.removeItem(SESSION_KEY);}
+
+function loadUserData(email){
+  try{const d=localStorage.getItem(dataKey(email));return d?JSON.parse(d):{cards:[],nodes:{},styleId:"paper"};}catch(e){return{cards:[],nodes:{},styleId:"paper"};}
+}
+function saveUserData(email,data){
+  try{localStorage.setItem(dataKey(email),JSON.stringify(data));}catch(e){}
+}
+
+/* ═══════════════════════════════════════════
+   GLOBAL STATE
+═══════════════════════════════════════════ */
+let session = null;   // {email, name}
+let D = {cards:[],nodes:{},styleId:"paper"};  // current user data
+let activeNode = null;
+let notifOn = false;
+let deferredPrompt = null;
+let qIdx = 0;
+
 const uid=()=>Math.random().toString(36).slice(2,8);
+const fmtDT=v=>{try{return new Date(v).toLocaleString("ar-EG",{dateStyle:"short",timeStyle:"short"});}catch(e){return v;}};
+const $=id=>document.getElementById(id);
 
-/* ═══════════════════════════════════════════════
-   NAVIGATION
-═══════════════════════════════════════════════ */
-function goHome(){
-  document.getElementById("canvas").classList.remove("show");
-  document.getElementById("home").classList.add("show");
-  closeDD(); closeTaskPanel();
+/* ═══════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════ */
+let tTimer=null;
+function toast$(m){
+  const t=$("toast");t.textContent=m;t.classList.add("on");
+  clearTimeout(tTimer);tTimer=setTimeout(()=>t.classList.remove("on"),2400);
+}
+
+/* ═══════════════════════════════════════════
+   SCREENS  — the ONE function that controls navigation
+═══════════════════════════════════════════ */
+function show(id){
+  document.querySelectorAll(".scr").forEach(s=>s.classList.remove("on"));
+  $(id).classList.add("on");
+}
+
+/* ═══════════════════════════════════════════
+   AUTH FORMS
+═══════════════════════════════════════════ */
+function switchAuth(tab){
+  $("form-login").style.display  = tab==="login"  ? "block":"none";
+  $("form-signup").style.display = tab==="signup" ? "block":"none";
+  $("tab-login").classList.toggle("on",  tab==="login");
+  $("tab-signup").classList.toggle("on", tab==="signup");
+  $("auth-err").textContent="";
+}
+
+function doLogin(){
+  const email=$("li-email").value.trim();
+  const pass=$("li-pass").value;
+  const err=$("auth-err");
+  if(!email||!pass){err.textContent="أدخل البريد وكلمة المرور";return;}
+  const users=getUsers();
+  const u=users[email.toLowerCase()];
+  if(!u){err.textContent="البريد غير مسجّل — أنشئ حساباً جديداً";return;}
+  if(u.passHash!==hashPass(pass)){err.textContent="كلمة المرور غير صحيحة";return;}
+  loginSuccess(email,u.name);
+}
+
+function doSignup(){
+  const name=$("su-name").value.trim();
+  const email=$("su-email").value.trim().toLowerCase();
+  const pass=$("su-pass").value;
+  const pass2=$("su-pass2").value;
+  const err=$("auth-err");
+  if(!name){err.textContent="أدخل اسمك";return;}
+  if(!email||!email.includes("@")){err.textContent="أدخل بريداً إلكترونياً صحيحاً";return;}
+  if(pass.length<6){err.textContent="كلمة المرور يجب أن تكون 6 أحرف على الأقل";return;}
+  if(pass!==pass2){err.textContent="كلمتا المرور غير متطابقتين";return;}
+  const users=getUsers();
+  if(users[email]){err.textContent="هذا البريد مسجّل بالفعل — سجّل الدخول";return;}
+  users[email]={name,passHash:hashPass(pass)};
+  saveUsers(users);
+  loginSuccess(email,name);
+  toast$("🎉 تم إنشاء حسابك بنجاح!");
+}
+
+function doGuest(){
+  const email="guest_"+Date.now();
+  loginSuccess(email,"زائر",true);
+}
+
+function loginSuccess(email,name,guest=false){
+  session={email,name,guest};
+  setSession(session);
+  D=loadUserData(email);
+  $("hm-username").textContent=name;
+  $("auth-err").textContent="";
+  show("s-home");
   renderHome();
 }
-function goCanvas(){
-  document.getElementById("home").classList.remove("show");
-  document.getElementById("canvas").classList.add("show");
-  renderCanvas();
-}
-function goSplash(){
-  document.getElementById("splash").classList.remove("hide");
+
+function doLogout(){
+  clearSession();
+  session=null;
+  D={cards:[],nodes:{},styleId:"paper"};
+  activeNode=null;
+  closeAllDD();
+  closeTP();
+  show("s-auth");
+  switchAuth("login");
+  toast$("تم تسجيل الخروج");
 }
 
-/* ═══════════════════════════════════════════════
-   TOAST
-═══════════════════════════════════════════════ */
-let toastTimer=null;
-function toast$(msg){
-  const t=document.getElementById("toast");
-  t.textContent=msg; t.classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove("show"),2400);
+function saveD(){
+  if(session) saveUserData(session.email, D);
 }
 
-/* ═══════════════════════════════════════════════
-   DROPDOWN
-═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   QUOTES
+═══════════════════════════════════════════ */
+function tickQ(){
+  qIdx=(qIdx+1)%QUOTES.length;
+  const q=QUOTES[qIdx];
+  const a=$("sp-q"); if(a)a.textContent=q;
+  const b=$("hm-q"); if(b)b.textContent=q;
+}
+setInterval(tickQ,3500);
+
+/* ═══════════════════════════════════════════
+   DROPDOWNS
+═══════════════════════════════════════════ */
 function toggleDD(id){
-  const dd=document.getElementById(id);
-  const isOpen=dd.classList.contains("show");
-  closeDD();
-  if(!isOpen){dd.classList.add("show"); if(id==="main-dd")renderProjList();}
+  const dd=$(id),was=dd.classList.contains("on");
+  closeAllDD();
+  if(!was){dd.classList.add("on");if(id==="dd-main")renderProjList();}
 }
-function closeDD(){
-  document.querySelectorAll(".dropdown").forEach(d=>d.classList.remove("show"));
+function closeAllDD(){document.querySelectorAll(".dd").forEach(d=>d.classList.remove("on"));}
+
+/* ═══════════════════════════════════════════
+   STYLE
+═══════════════════════════════════════════ */
+function renderSG(){
+  const sg=$("sg");if(!sg)return;
+  sg.innerHTML=PAGE_STYLES.map(ps=>`<div class="sg-opt ${D.styleId===ps.id?"sel":""}" style="background:${ps.bg};color:${ps.dark?"#fff":"#555"}" onclick="setStyle('${ps.id}')">${ps.label}</div>`).join("");
+}
+function setStyle(id){D.styleId=id;saveD();applyStyle();renderSG();closeAllDD();toast$("🎨 تم التغيير");}
+function applyStyle(){
+  const ps=PAGE_STYLES.find(p=>p.id===D.styleId)||PAGE_STYLES[0];
+  const bg=$("cv-bg");if(!bg)return;
+  bg.style.background=ps.bg;
+  bg.style.backgroundImage=`repeating-linear-gradient(0deg,transparent,transparent 29px,${ps.line} 30px),repeating-linear-gradient(90deg,transparent,transparent 29px,${ps.line} 30px)`;
+  const eh=$("empty-hint");if(eh)eh.querySelector(".eh-t").style.color=ps.dark?"rgba(255,255,255,.3)":"#bbb";
 }
 
-/* ═══════════════════════════════════════════════
-   CARD OPERATIONS
-═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   CARDS
+═══════════════════════════════════════════ */
 function addCard(){
-  if(state.cards.length>=30){toast$("الحد الأقصى 30 فكرة");return;}
-  const idx=state.cards.length;
+  if(D.cards.length>=30){toast$("الحد الأقصى 30 فكرة");return;}
+  const idx=D.cards.length;
   const [c1,c2]=COLORS[idx%COLORS.length];
-  const canvas=document.getElementById("canvas");
-  const cw=canvas.offsetWidth||window.innerWidth;
-  const ch=canvas.offsetHeight||window.innerHeight;
-  const card={
-    id:uid(), title:"فكرة جديدة",
-    emoji:EMOJIS[idx%EMOJIS.length],
-    x:Math.max(20,Math.random()*(cw-220)),
-    y:Math.max(80,Math.random()*(ch-160)),
-    c1,c2,
-  };
-  state.cards.push(card);
-  saveState();
-  if(document.getElementById("canvas").classList.contains("show")){
-    renderCanvas();
-  }
+  const cv=$("s-canvas");
+  const cw=cv.offsetWidth||window.innerWidth;
+  const ch=cv.offsetHeight||window.innerHeight;
+  D.cards.push({id:uid(),title:"فكرة جديدة",emoji:EMOJIS[idx%EMOJIS.length],x:Math.max(16,Math.random()*(cw-220)),y:Math.max(80,Math.random()*(ch-180)),c1,c2});
+  saveD();
+  show("s-canvas");
+  renderCanvas();
   toast$("تمت الإضافة ✓");
 }
 
 function deleteCard(cardId){
-  state.cards=state.cards.filter(c=>c.id!==cardId);
-  delete state.nodes[cardId];
-  if(activeNode&&activeNode.cardId===cardId) closeTaskPanel();
-  saveState(); renderCanvas();
-  toast$("تم الحذف");
+  D.cards=D.cards.filter(c=>c.id!==cardId);
+  delete D.nodes[cardId];
+  if(activeNode&&activeNode.cardId===cardId)closeTP();
+  saveD();renderCanvas();toast$("تم الحذف");
 }
 
-/* ═══════════════════════════════════════════════
-   NODE OPERATIONS
-═══════════════════════════════════════════════ */
-function addNode(cardId, type){
-  const card=state.cards.find(c=>c.id===cardId);
-  if(!card) return;
-  if(!state.nodes[cardId]) state.nodes[cardId]=[];
-  const existing=state.nodes[cardId];
-  const already=existing.find(n=>n.type===type);
-  if(already){openTaskPanel(cardId,already.id); return;}
-  const angle=(-Math.PI/2)+existing.length*0.9;
-  const dist=Math.min(170, (document.getElementById("canvas").offsetWidth||320)*0.38);
-  const node={
-    id:uid(), type,
-    x:Math.max(0,card.x+dist*Math.cos(angle)),
-    y:Math.max(0,card.y+dist*Math.sin(angle)),
-    tasks:[],dt:"",
-  };
-  existing.push(node);
-  saveState(); renderCanvas();
-  openTaskPanel(cardId,node.id);
+function updateTitle(id,title){
+  const c=D.cards.find(x=>x.id===id);
+  if(c){c.title=title;saveD();}
 }
 
-function patchNode(cardId,nodeId,patch){
-  if(!state.nodes[cardId]) return;
-  const idx=state.nodes[cardId].findIndex(n=>n.id===nodeId);
-  if(idx<0) return;
-  Object.assign(state.nodes[cardId][idx],patch);
-  saveState(); renderCanvas();
+/* ═══════════════════════════════════════════
+   NODES
+═══════════════════════════════════════════ */
+function addNode(cardId,type){
+  const card=D.cards.find(c=>c.id===cardId);if(!card)return;
+  if(!D.nodes[cardId])D.nodes[cardId]=[];
+  const ex=D.nodes[cardId];
+  const already=ex.find(n=>n.type===type);
+  if(already){openTP(cardId,already.id);return;}
+  const angle=(-Math.PI/2)+ex.length*0.9;
+  const cv=$("s-canvas");
+  const dist=Math.min(170,cv?cv.offsetWidth*0.35:170);
+  ex.push({id:uid(),type,x:Math.max(4,card.x+dist*Math.cos(angle)),y:Math.max(4,card.y+dist*Math.sin(angle)),tasks:[],dt:""});
+  saveD();renderCanvas();openTP(cardId,ex[ex.length-1].id);
 }
 
-/* ═══════════════════════════════════════════════
+function patchNode(cid,nid,patch){
+  const n=(D.nodes[cid]||[]).find(x=>x.id===nid);
+  if(n){Object.assign(n,patch);saveD();}
+}
+
+/* ═══════════════════════════════════════════
    TASK PANEL
-═══════════════════════════════════════════════ */
-function openTaskPanel(cardId,nodeId){
+═══════════════════════════════════════════ */
+function openTP(cardId,nodeId){
   activeNode={cardId,nodeId};
-  const card=state.cards.find(c=>c.id===cardId);
-  const nodes=state.nodes[cardId]||[];
-  const node=nodes.find(n=>n.id===nodeId);
-  if(!node) return;
-  const info=NODE_TYPES[node.type];
-  const panel=document.getElementById("task-panel");
-  document.getElementById("tp-label").textContent=info.label;
-  document.getElementById("tp-label").style.color=info.color;
-  document.getElementById("tp-card").textContent=(card?card.emoji+" "+card.title:"");
-  document.getElementById("tp-dt").value=node.dt||"";
-  document.getElementById("tp-save-btn").style.background=`linear-gradient(90deg,${info.color},${info.color}bb)`;
-  document.getElementById("task-add-btn").style.background=info.color;
-  renderTasks();
-
-  // Position panel smartly
-  const canvas=document.getElementById("canvas");
-  const cw=canvas.offsetWidth, ch=canvas.offsetHeight;
-  const pw=parseInt(panel.style.width)||252;
-  const ph=340;
-  let px=node.x+132, py=node.y;
-  if(px+pw>cw-10) px=node.x-pw-8;
-  if(py+ph>ch-8)  py=ch-ph-8;
-  if(px<8) px=8; if(py<8) py=8;
-  panel.style.left=px+"px"; panel.style.top=py+"px";
-  panel.classList.add("show");
-  renderCanvas(); // refresh node highlight
-}
-
-function closeTaskPanel(){
-  activeNode=null;
-  document.getElementById("task-panel").classList.remove("show");
+  const card=D.cards.find(c=>c.id===cardId);
+  const node=(D.nodes[cardId]||[]).find(n=>n.id===nodeId);
+  if(!node)return;
+  const info=NT[node.type];
+  $("tp-lbl").textContent=info.label;$("tp-lbl").style.color=info.color;
+  $("tp-cn").textContent=card?card.emoji+" "+card.title:"";
+  $("tp-dt").value=node.dt||"";
+  $("btn-tp-save").style.background=`linear-gradient(90deg,${info.color},${info.color}bb)`;
+  $("btn-t-add").style.background=info.color;
+  renderTL();
+  const cv=$("s-canvas");
+  const cw=cv.offsetWidth,ch=cv.offsetHeight;
+  const pw=252,ph=340;
+  let px=node.x+128,py=node.y;
+  if(px+pw>cw-10)px=node.x-pw-8;
+  if(py+ph>ch-8) py=ch-ph-8;
+  if(px<8)px=8;if(py<8)py=8;
+  const tp=$("task-panel");
+  tp.style.left=px+"px";tp.style.top=py+"px";tp.classList.add("on");
   renderCanvas();
 }
 
+function closeTP(){activeNode=null;$("task-panel").classList.remove("on");renderCanvas();}
+
 function saveDT(){
-  if(!activeNode) return;
-  const val=document.getElementById("tp-dt").value;
-  patchNode(activeNode.cardId,activeNode.nodeId,{dt:val});
-  toast$("📅 تم حفظ الموعد");
-  scheduleNotif();
+  if(!activeNode)return;
+  patchNode(activeNode.cardId,activeNode.nodeId,{dt:$("tp-dt").value});
+  renderCanvas();toast$("📅 تم حفظ الموعد");
 }
 
 function addTask(){
-  const inp=document.getElementById("task-inp");
-  if(!activeNode||!inp.value.trim()) return;
+  const inp=$("t-inp");
+  if(!activeNode||!inp.value.trim())return;
   const {cardId,nodeId}=activeNode;
-  const nodes=state.nodes[cardId]||[];
-  const node=nodes.find(n=>n.id===nodeId);
-  if(!node) return;
+  const node=(D.nodes[cardId]||[]).find(n=>n.id===nodeId);
+  if(!node)return;
   node.tasks=[...(node.tasks||[]),{id:uid(),text:inp.value.trim(),done:false}];
-  inp.value=""; saveState(); renderTasks(); renderCanvas();
+  inp.value="";saveD();renderTL();renderCanvas();
 }
 
 function toggleTask(tid){
-  if(!activeNode) return;
-  const {cardId,nodeId}=activeNode;
-  const nodes=state.nodes[cardId]||[];
-  const node=nodes.find(n=>n.id===nodeId);
-  if(!node) return;
-  const t=node.tasks.find(x=>x.id===tid);
-  if(t) t.done=!t.done;
-  saveState(); renderTasks(); renderCanvas();
+  if(!activeNode)return;
+  const node=(D.nodes[activeNode.cardId]||[]).find(n=>n.id===activeNode.nodeId);
+  if(!node)return;
+  const t=node.tasks.find(x=>x.id===tid);if(t)t.done=!t.done;
+  saveD();renderTL();renderCanvas();
 }
 
 function deleteTask(tid){
-  if(!activeNode) return;
-  const {cardId,nodeId}=activeNode;
-  const nodes=state.nodes[cardId]||[];
-  const node=nodes.find(n=>n.id===nodeId);
-  if(!node) return;
+  if(!activeNode)return;
+  const node=(D.nodes[activeNode.cardId]||[]).find(n=>n.id===activeNode.nodeId);
+  if(!node)return;
   node.tasks=node.tasks.filter(t=>t.id!==tid);
-  saveState(); renderTasks(); renderCanvas();
+  saveD();renderTL();renderCanvas();
 }
 
-function renderTasks(){
-  if(!activeNode) return;
+function renderTL(){
+  if(!activeNode)return;
   const {cardId,nodeId}=activeNode;
-  const nodes=state.nodes[cardId]||[];
-  const node=nodes.find(n=>n.id===nodeId);
-  const info=node?NODE_TYPES[node.type]:null;
-  const list=document.getElementById("task-list");
+  const node=(D.nodes[cardId]||[]).find(n=>n.id===nodeId);
+  const info=node?NT[node.type]:null;
+  const list=$("t-list");
   if(!node||!info){list.innerHTML="";return;}
-  if(!node.tasks||!node.tasks.length){
-    list.innerHTML='<div style="font-size:12px;color:#ddd;text-align:center;padding:8px 0">لا توجد مهام بعد</div>';
-    return;
-  }
-  list.innerHTML=node.tasks.map(t=>`
-    <div class="task-row">
-      <div class="task-check" onclick="toggleTask('${t.id}')"
-        style="border-color:${info.color};background:${t.done?info.color:'transparent'}">
-        ${t.done?"✓":""}
-      </div>
-      <span class="task-text" style="color:${t.done?"#ccc":"#333"};text-decoration:${t.done?"line-through":"none"}">${t.text}</span>
-      <button class="task-del" onclick="deleteTask('${t.id}')">✕</button>
-    </div>`).join("");
+  if(!(node.tasks||[]).length){list.innerHTML='<div style="font-size:12px;color:#ddd;text-align:center;padding:8px 0">لا توجد مهام بعد</div>';return;}
+  list.innerHTML=node.tasks.map(t=>`<div class="t-row">
+    <div class="t-chk" onclick="toggleTask('${t.id}')" style="border-color:${info.color};background:${t.done?info.color:"transparent"}">${t.done?"✓":""}</div>
+    <span class="t-txt ${t.done?"t-done":""}">${t.text}</span>
+    <button class="t-del" onclick="deleteTask('${t.id}')">✕</button>
+  </div>`).join("");
 }
 
-/* ═══════════════════════════════════════════════
-   RENDER HOME
-═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   HOME RENDER
+═══════════════════════════════════════════ */
 function renderHome(){
-  const hl=document.getElementById("home-list");
-  const items=document.getElementById("home-list-items");
-  const title=document.getElementById("home-list-title");
-  if(!state.cards.length){hl.style.display="none";return;}
+  const hl=$("hm-list");
+  if(!D.cards.length){hl.style.display="none";return;}
   hl.style.display="block";
-  title.textContent="المشروعات المحفوظة ("+state.cards.length+")";
-  items.innerHTML=state.cards.map(c=>{
-    const hasUrgent=(state.nodes[c.id]||[]).find(n=>n.type==="urgent");
-    return `<div class="home-list-row" onclick="goCanvas()">
-      <div class="home-list-dot" style="background:${c.c1}"></div>
+  $("hm-list-hd").textContent="المشروعات المحفوظة ("+D.cards.length+")";
+  $("hm-list-items").innerHTML=D.cards.map(c=>{
+    const urg=(D.nodes[c.id]||[]).find(n=>n.type==="urgent");
+    return `<div class="hm-row" onclick="show('s-canvas');renderCanvas()">
+      <div class="hm-dot" style="background:${c.c1}"></div>
       <span>${c.emoji} ${c.title}</span>
-      ${hasUrgent?'<span style="margin-right:auto;font-size:11px">🔥</span>':''}
+      ${urg?'<span style="margin-right:auto;font-size:11px">🔥</span>':""}
     </div>`;
   }).join("");
 }
 
-/* ═══════════════════════════════════════════════
-   RENDER PROJ LIST (dropdown)
-═══════════════════════════════════════════════ */
 function renderProjList(){
-  const pl=document.getElementById("proj-list");
-  const ph=document.getElementById("proj-header");
-  if(!state.cards.length){ph.textContent="لا يوجد مشروعات";pl.innerHTML="";return;}
-  ph.textContent="المشروعات ("+state.cards.length+")";
-  pl.innerHTML=state.cards.map(c=>`
-    <div class="dd-proj">
-      <div class="dd-proj-dot" style="background:${c.c1}"></div>
-      <span style="flex:1">${c.emoji} ${c.title}</span>
-      <button class="dd-del" onclick="event.stopPropagation();deleteCard('${c.id}')">🗑</button>
-    </div>`).join("");
+  const pl=$("dd-proj-list"),ph=$("dd-proj-hd");
+  if(!D.cards.length){ph.textContent="لا يوجد مشروعات بعد";pl.innerHTML="";return;}
+  ph.textContent="المشروعات ("+D.cards.length+")";
+  pl.innerHTML=D.cards.map(c=>`<div class="dd-proj">
+    <div style="width:9px;height:9px;border-radius:3px;background:${c.c1};flex-shrink:0"></div>
+    <span style="flex:1">${c.emoji} ${c.title}</span>
+    <button class="dd-pdel" onclick="event.stopPropagation();deleteCard('${c.id}')">🗑</button>
+  </div>`).join("");
 }
 
-/* ═══════════════════════════════════════════════
-   RENDER STYLE GRID
-═══════════════════════════════════════════════ */
-function renderStyleGrid(){
-  const sg=document.getElementById("style-grid");
-  sg.innerHTML=PAGE_STYLES.map(ps=>`
-    <div class="style-opt ${state.styleId===ps.id?"active":""}"
-      style="background:${ps.bg};color:${ps.dark?"#fff":"#555"}"
-      onclick="setStyle('${ps.id}')">
-      ${ps.label}
-    </div>`).join("");
-}
-function setStyle(id){
-  state.styleId=id;
-  saveState(); applyStyle(); renderStyleGrid(); closeDD();
-  toast$("🎨 تم تغيير الاستايل");
-}
-function applyStyle(){
-  const ps=PAGE_STYLES.find(p=>p.id===state.styleId)||PAGE_STYLES[0];
-  const bg=document.getElementById("canvas-bg");
-  bg.style.background=ps.bg;
-  bg.style.backgroundImage=`repeating-linear-gradient(0deg,transparent,transparent 29px,${ps.line} 30px),repeating-linear-gradient(90deg,transparent,transparent 29px,${ps.line} 30px)`;
-  const hint=document.getElementById("empty-hint").querySelector(".eh-txt");
-  hint.style.color=ps.dark?"rgba(255,255,255,.3)":"#bbb";
-}
-
-/* ═══════════════════════════════════════════════
-   RENDER CANVAS — cards + nodes + lines
-═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   CANVAS RENDER
+═══════════════════════════════════════════ */
 function renderCanvas(){
   applyStyle();
-  // Empty hint
-  document.getElementById("empty-hint").style.display=state.cards.length?"none":"flex";
-
-  // Remove old card/node els (keep SVG, toolbar, task-panel)
-  document.querySelectorAll(".idea-card,.idea-node").forEach(e=>e.remove());
-
-  const canvas=document.getElementById("canvas");
-  const svg=document.getElementById("canvas-svg");
-  let svgContent="";
-
-  state.cards.forEach(card=>{
-    const cardNodes=state.nodes[card.id]||[];
-
-    // SVG lines
-    cardNodes.forEach(node=>{
-      const info=NODE_TYPES[node.type];
-      const x1=card.x+76, y1=card.y+40;
-      const x2=node.x+61, y2=node.y+25;
-      svgContent+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${info.color}" stroke-width="2.5" stroke-dasharray="7 4" opacity=".65"/>
-      <circle cx="${x2}" cy="${y2}" r="5" fill="${info.color}" opacity=".9"/>`;
+  const eh=$("empty-hint");
+  if(eh)eh.classList.toggle("on",D.cards.length===0);
+  document.querySelectorAll(".card,.node").forEach(e=>e.remove());
+  const cv=$("s-canvas"),svg=$("cv-svg");
+  let svgH="";
+  D.cards.forEach(card=>{
+    const cns=D.nodes[card.id]||[];
+    cns.forEach(node=>{
+      const info=NT[node.type];
+      svgH+=`<line x1="${card.x+76}" y1="${card.y+40}" x2="${node.x+59}" y2="${node.y+25}" stroke="${info.color}" stroke-width="2.5" stroke-dasharray="7 4" opacity=".65"/>
+      <circle cx="${node.x+59}" cy="${node.y+25}" r="5" fill="${info.color}" opacity=".9"/>`;
     });
-
-    // Card element
+    // Card
     const el=document.createElement("div");
-    el.className="idea-card";
-    el.id="card-"+card.id;
+    el.className="card";el.id="c-"+card.id;
     el.style.cssText=`left:${card.x}px;top:${card.y}px;background:linear-gradient(135deg,${card.c1},${card.c2})`;
-    el.innerHTML=`
-      <div class="card-row">
-        <span class="card-emoji">${card.emoji}</span>
-        <input class="card-input" value="${card.title.replace(/"/g,'&quot;')}" placeholder="اسم الفكرة"
-          onchange="updateTitle('${card.id}',this.value)"
-          onclick="event.stopPropagation()">
-      </div>
-      <div class="card-tags">
-        ${Object.entries(NODE_TYPES).map(([t,i])=>`<button class="ctag" onclick="event.stopPropagation();addNode('${card.id}','${t}')">${i.label}</button>`).join("")}
-        <button class="ctag ctag-del" onclick="event.stopPropagation();deleteCard('${card.id}')">🗑️</button>
-      </div>
-      ${cardNodes.length?`<div class="card-nodes-mini">${cardNodes.map(n=>`<span class="cnm">${NODE_TYPES[n.type]?.label}${(n.tasks||[]).length?" ("+n.tasks.length+")":""}</span>`).join("")}</div>`:""}
-    `;
-    setupDrag(el,"card",card.id);
-    canvas.appendChild(el);
-
-    // Node elements
-    cardNodes.forEach(node=>{
-      const info=NODE_TYPES[node.type];
-      const isActive=activeNode&&activeNode.nodeId===node.id;
+    el.innerHTML=`<div class="c-row"><span class="c-emoji">${card.emoji}</span>
+      <input class="c-inp" value="${card.title.replace(/"/g,"&quot;")}" placeholder="اسم الفكرة"
+        onchange="updateTitle('${card.id}',this.value)" onclick="event.stopPropagation()">
+    </div>
+    <div class="c-tags">
+      ${Object.entries(NT).map(([t,i])=>`<button class="ctag" onclick="event.stopPropagation();addNode('${card.id}','${t}')">${i.label}</button>`).join("")}
+      <button class="ctag ctag-del" onclick="event.stopPropagation();deleteCard('${card.id}')">🗑️</button>
+    </div>
+    ${cns.length?`<div class="c-mini">${cns.map(n=>`<span class="c-mbadge">${NT[n.type]?.label}${(n.tasks||[]).length?" ("+n.tasks.length+")":""}</span>`).join("")}</div>`:""}`;
+    makeDraggable(el,"card",card.id,null);
+    cv.appendChild(el);
+    // Nodes
+    cns.forEach(node=>{
+      const info=NT[node.type];
+      const isAct=activeNode&&activeNode.nodeId===node.id;
       const nel=document.createElement("div");
-      nel.className="idea-node"+(isActive?" active-node":"");
-      nel.id="node-"+node.id;
-      nel.style.cssText=`left:${node.x}px;top:${node.y}px;background:${info.bg};border:1.5px solid ${info.color}30;${isActive?`box-shadow:0 0 0 3px ${info.color},0 8px 28px rgba(0,0,0,.15)`:""}`;
-      nel.innerHTML=`
-        <div class="node-label" style="color:${info.color}">${info.label}</div>
-        ${(node.tasks||[]).length?`<div class="node-count">${(node.tasks||[]).filter(t=>t.done).length}/${(node.tasks||[]).length} مهام</div>`:""}
-        ${node.dt?`<div class="node-dt" style="color:${info.color}">📅 ${fmtDT(node.dt)}</div>`:""}
-      `;
-      nel.addEventListener("click",e=>{e.stopPropagation();openTaskPanel(card.id,node.id);});
-      setupDrag(nel,"node",node.id,card.id);
-      canvas.appendChild(nel);
+      nel.className="node"+(isAct?" act":"");nel.id="n-"+node.id;
+      nel.style.cssText=`left:${node.x}px;top:${node.y}px;background:${info.bg};border:1.5px solid ${info.color}30;${isAct?"box-shadow:0 0 0 3px "+info.color+",0 8px 28px rgba(0,0,0,.15)":""}`;
+      nel.innerHTML=`<div class="n-lbl" style="color:${info.color}">${info.label}</div>
+        ${(node.tasks||[]).length?`<div class="n-cnt">${(node.tasks||[]).filter(t=>t.done).length}/${(node.tasks||[]).length} مهام</div>`:""}
+        ${node.dt?`<div class="n-dt" style="color:${info.color}">📅 ${fmtDT(node.dt)}</div>`:""}`;
+      nel.addEventListener("click",e=>{e.stopPropagation();openTP(card.id,node.id);});
+      makeDraggable(nel,"node",node.id,card.id);
+      cv.appendChild(nel);
     });
   });
-
-  svg.innerHTML=svgContent;
+  svg.innerHTML=svgH;
 }
 
-function updateTitle(id,title){
-  const card=state.cards.find(c=>c.id===id);
-  if(card){card.title=title;saveState();}
-}
-
-function fmtDT(v){try{return new Date(v).toLocaleString("ar-EG",{dateStyle:"short",timeStyle:"short"});}catch(e){return v;}}
-
-/* ═══════════════════════════════════════════════
-   DRAG — pointer events
-═══════════════════════════════════════════════ */
-function setupDrag(el, kind, id, cardId){
-  let ox=0, oy=0, isDragging=false;
-
-  el.addEventListener("pointerdown", e=>{
-    if(["INPUT","BUTTON"].includes(e.target.tagName)) return;
-    e.preventDefault();
-    e.stopPropagation();
-    const canvas=document.getElementById("canvas");
-    const rect=canvas.getBoundingClientRect();
-    if(kind==="card"){
-      const card=state.cards.find(c=>c.id===id);
-      ox=e.clientX-rect.left-card.x;
-      oy=e.clientY-rect.top-card.y;
-    } else {
-      const node=(state.nodes[cardId]||[]).find(n=>n.id===id);
-      if(!node) return;
-      ox=e.clientX-rect.left-node.x;
-      oy=e.clientY-rect.top-node.y;
-    }
-    isDragging=true;
-    el.classList.add("dragging");
-    el.setPointerCapture(e.pointerId);
+/* ═══════════════════════════════════════════
+   DRAG
+═══════════════════════════════════════════ */
+function makeDraggable(el,kind,id,cardId){
+  let ox=0,oy=0,active=false;
+  el.addEventListener("pointerdown",e=>{
+    if(["INPUT","BUTTON"].includes(e.target.tagName))return;
+    e.preventDefault();e.stopPropagation();
+    const r=$("s-canvas").getBoundingClientRect();
+    if(kind==="card"){const c=D.cards.find(x=>x.id===id);ox=e.clientX-r.left-c.x;oy=e.clientY-r.top-c.y;}
+    else{const n=(D.nodes[cardId]||[]).find(x=>x.id===id);if(!n)return;ox=e.clientX-r.left-n.x;oy=e.clientY-r.top-n.y;}
+    active=true;el.classList.add("drag");el.setPointerCapture(e.pointerId);
   });
-
-  el.addEventListener("pointermove", e=>{
-    if(!isDragging) return;
-    e.preventDefault();
-    const canvas=document.getElementById("canvas");
-    const rect=canvas.getBoundingClientRect();
-    const nx=Math.max(0, Math.min(e.clientX-rect.left-ox, rect.width-200));
-    const ny=Math.max(0, Math.min(e.clientY-rect.top-oy,  rect.height-140));
-    if(kind==="card"){
-      const card=state.cards.find(c=>c.id===id);
-      if(card){
-        card.x=nx; card.y=ny;
-        el.style.left=nx+"px"; el.style.top=ny+"px";
-        // Move connected lines live
-        redrawLines();
-      }
-    } else {
-      const node=(state.nodes[cardId]||[]).find(n=>n.id===id);
-      if(node){
-        node.x=nx; node.y=ny;
-        el.style.left=nx+"px"; el.style.top=ny+"px";
-        redrawLines();
-      }
-    }
+  el.addEventListener("pointermove",e=>{
+    if(!active)return;e.preventDefault();
+    const r=$("s-canvas").getBoundingClientRect();
+    const nx=Math.max(0,Math.min(e.clientX-r.left-ox,r.width-200));
+    const ny=Math.max(0,Math.min(e.clientY-r.top-oy,r.height-140));
+    if(kind==="card"){const c=D.cards.find(x=>x.id===id);if(c){c.x=nx;c.y=ny;el.style.left=nx+"px";el.style.top=ny+"px";redrawLines();}}
+    else{const n=(D.nodes[cardId]||[]).find(x=>x.id===id);if(n){n.x=nx;n.y=ny;el.style.left=nx+"px";el.style.top=ny+"px";redrawLines();}}
   });
-
-  el.addEventListener("pointerup", e=>{
-    if(!isDragging) return;
-    isDragging=false;
-    el.classList.remove("dragging");
-    saveState();
-  });
+  el.addEventListener("pointerup",()=>{if(!active)return;active=false;el.classList.remove("drag");saveD();});
 }
 
 function redrawLines(){
-  const svg=document.getElementById("canvas-svg");
-  let svgContent="";
-  state.cards.forEach(card=>{
-    (state.nodes[card.id]||[]).forEach(node=>{
-      const info=NODE_TYPES[node.type];
-      svgContent+=`<line x1="${card.x+76}" y1="${card.y+40}" x2="${node.x+61}" y2="${node.y+25}" stroke="${info.color}" stroke-width="2.5" stroke-dasharray="7 4" opacity=".65"/>
-      <circle cx="${node.x+61}" cy="${node.y+25}" r="5" fill="${info.color}" opacity=".9"/>`;
+  let h="";
+  D.cards.forEach(c=>{
+    (D.nodes[c.id]||[]).forEach(n=>{
+      const info=NT[n.type];
+      h+=`<line x1="${c.x+76}" y1="${c.y+40}" x2="${n.x+59}" y2="${n.y+25}" stroke="${info.color}" stroke-width="2.5" stroke-dasharray="7 4" opacity=".65"/>
+      <circle cx="${n.x+59}" cy="${n.y+25}" r="5" fill="${info.color}" opacity=".9"/>`;
     });
   });
-  svg.innerHTML=svgContent;
+  $("cv-svg").innerHTML=h;
 }
 
-/* ═══════════════════════════════════════════════
-   QUOTE TICKER
-═══════════════════════════════════════════════ */
-function tickQuote(){
-  quoteIdx=(quoteIdx+1)%QUOTES.length;
-  const sq=document.getElementById("splash-q");
-  const hq=document.getElementById("home-q");
-  if(sq) sq.textContent=QUOTES[quoteIdx];
-  if(hq) hq.textContent=QUOTES[quoteIdx];
-}
-setInterval(tickQuote,3500);
-
-/* ═══════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    NOTIFICATIONS
-═══════════════════════════════════════════════ */
+═══════════════════════════════════════════ */
 function toggleNotif(){
-  notifEnabled=!notifEnabled;
-  toast$(notifEnabled?"🔔 التنبيهات مفعّلة":"🔕 التنبيهات موقوفة");
-  if(notifEnabled&&"Notification" in window) Notification.requestPermission();
-}
-function scheduleNotif(){
-  if(!notifEnabled||!("Notification" in window)) return;
-  state.cards.forEach(card=>{
-    (state.nodes[card.id]||[]).filter(n=>n.type==="urgent"&&n.dt).forEach(n=>{
-      const diff=new Date(n.dt)-Date.now();
-      if(diff>0&&diff<86400000){
-        setTimeout(()=>{
-          if(Notification.permission==="granted"){
-            new Notification("⏰ فكرتى — "+card.title,{body:"موعد مهمة عاجلة!",icon:"icons/icon-192.png",dir:"rtl"});
-          }
-        }, Math.max(0,diff-60000));
-      }
-    });
-  });
+  notifOn=!notifOn;
+  toast$(notifOn?"🔔 التنبيهات مفعّلة":"🔕 التنبيهات موقوفة");
+  if(notifOn&&"Notification" in window)Notification.requestPermission();
 }
 
-/* ═══════════════════════════════════════════════
-   PWA INSTALL
-═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   PWA
+═══════════════════════════════════════════ */
 window.addEventListener("beforeinstallprompt",e=>{
-  e.preventDefault(); deferredPrompt=e;
-  if(!localStorage.getItem("install-dismissed")){
-    setTimeout(()=>document.getElementById("install-banner").classList.add("show"),3000);
-  }
+  e.preventDefault();deferredPrompt=e;
+  if(!localStorage.getItem("inst-dismissed"))
+    setTimeout(()=>$("inst-banner").classList.add("on"),3500);
 });
-function installPWA(){
-  document.getElementById("install-banner").classList.remove("show");
-  if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(r=>{if(r.outcome==="accepted")toast$("🎉 تم تثبيت فكرتى!");}); deferredPrompt=null;}
-}
-function dismissInstall(){
-  document.getElementById("install-banner").classList.remove("show");
-  localStorage.setItem("install-dismissed","1");
-}
-window.addEventListener("appinstalled",()=>toast$("🎉 تم تثبيت التطبيق بنجاح!"));
+window.addEventListener("appinstalled",()=>toast$("🎉 تم تثبيت التطبيق!"));
 
-/* ═══════════════════════════════════════════════
-   CLOSE PANELS ON CANVAS CLICK
-═══════════════════════════════════════════════ */
-document.getElementById("canvas").addEventListener("click",e=>{
-  if(e.target.id==="canvas"||e.target.id==="canvas-bg"||e.target.tagName==="svg"||e.target.id==="canvas-svg"){
-    closeDD(); closeTaskPanel();
-  }
-});
-document.addEventListener("click",e=>{
-  if(!e.target.closest(".dropdown")&&!e.target.closest(".tbtn")){
-    document.querySelectorAll(".dropdown").forEach(d=>d.classList.remove("show"));
-  }
-});
+/* ═══════════════════════════════════════════
+   BIND EVENTS
+═══════════════════════════════════════════ */
+function bindAll(){
+  // Splash → Auth
+  $("btn-start").onclick=()=>show("s-auth");
 
-/* ═══════════════════════════════════════════════
-   SERVICE WORKER REGISTRATION
-═══════════════════════════════════════════════ */
+  // Auth
+  $("btn-login").onclick=doLogin;
+  $("btn-signup").onclick=doSignup;
+  $("btn-guest").onclick=doGuest;
+  $("li-pass").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
+  $("su-pass2").addEventListener("keydown",e=>{if(e.key==="Enter")doSignup();});
+
+  // Home
+  $("btn-hm-add").onclick=()=>addCard();
+  $("btn-hm-open").onclick=()=>{show("s-canvas");renderCanvas();};
+  $("btn-logout").onclick=doLogout;
+
+  // Canvas toolbar
+  $("btn-main-dd").onclick=e=>{e.stopPropagation();toggleDD("dd-main");};
+  $("btn-style-dd").onclick=e=>{e.stopPropagation();toggleDD("dd-style");};
+
+  // Dropdown items
+  $("btn-dd-home").onclick=()=>{closeAllDD();show("s-home");renderHome();};
+  $("btn-dd-add").onclick=()=>{closeAllDD();addCard();};
+  $("btn-dd-notif").onclick=()=>{closeAllDD();toggleNotif();};
+  $("btn-dd-logout").onclick=()=>{closeAllDD();doLogout();};
+
+  // Task panel
+  $("btn-tp-x").onclick=closeTP;
+  $("btn-tp-save").onclick=saveDT;
+  $("btn-t-add").onclick=addTask;
+  $("t-inp").addEventListener("keydown",e=>{if(e.key==="Enter")addTask();});
+
+  // Canvas click → close panels
+  $("s-canvas").addEventListener("click",e=>{
+    const id=e.target.id;
+    if(id==="s-canvas"||id==="cv-bg"||id==="cv-svg"||e.target===document.querySelector("#cv-svg")){
+      closeAllDD();closeTP();
+    }
+  });
+  document.addEventListener("click",e=>{
+    if(!e.target.closest(".dd")&&!e.target.closest(".tbtn"))closeAllDD();
+  });
+
+  // Install
+  $("btn-inst-yes").onclick=()=>{
+    $("inst-banner").classList.remove("on");
+    if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=null;}
+  };
+  $("btn-inst-no").onclick=()=>{
+    $("inst-banner").classList.remove("on");
+    localStorage.setItem("inst-dismissed","1");
+  };
+}
+
+/* ═══════════════════════════════════════════
+   SERVICE WORKER
+═══════════════════════════════════════════ */
 if("serviceWorker" in navigator){
   window.addEventListener("load",()=>{
     navigator.serviceWorker.register("sw.js")
-      .then(()=>console.log("SW registered"))
-      .catch(e=>console.log("SW error",e));
+      .then(()=>console.log("SW ✓"))
+      .catch(e=>console.warn("SW:",e));
   });
 }
 
-/* ═══════════════════════════════════════════════
-   BOOT
-═══════════════════════════════════════════════ */
-function boot(){
-  loadState();
-  renderStyleGrid();
-  applyStyle();
-}
+/* ═══════════════════════════════════════════
+   BOOT  ← single entry point, runs once
+═══════════════════════════════════════════ */
+document.addEventListener("DOMContentLoaded",()=>{
+  bindAll();
+  renderSG();
 
-function goHome(){
-  document.getElementById("canvas").classList.remove("show");
-  document.getElementById("home").classList.add("show");
-  closeDD(); closeTaskPanel();
-  renderHome();
-}
-
-boot();
+  // Check existing session
+  const saved=getSession();
+  if(saved){
+    session=saved;
+    D=loadUserData(saved.email);
+    $("hm-username").textContent=saved.name;
+    applyStyle();renderSG();
+    show("s-home");
+    renderHome();
+  } else {
+    show("s-splash");
+  }
+});
 </script>
 </body>
 </html>
